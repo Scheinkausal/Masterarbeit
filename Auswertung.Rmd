@@ -60,7 +60,10 @@ library(car)
 library(Rmisc)
 
 ```
-
+#load Data
+```{r}
+data  <- read.csv("data_project_1013280_2024_03_14.csv", sep = ";")
+```
 
 
 
