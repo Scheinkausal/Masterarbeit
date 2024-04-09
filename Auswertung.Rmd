@@ -65,5 +65,28 @@ library(Rmisc)
 data  <- read.csv("data_project_1013280_2024_03_14.csv", sep = ";")
 ```
 
+#Data preperation
+
+##Age Groups
+```{r}
+data$AGEGROUP <- NA
+data$AGEGROUP <- factor(
+  data$AGEGROUP,
+  levels = c(1,2),
+  labels = c("18-29", "30-75")
+)
+
+data$AGEGROUP[which(data$ALTER >= 18 & data$ALTER <=29 )] <- "18-29"
+data$AGEGROUP[which(data$ALTER >= 30 & data$ALTER <= 75 )] <- "30-75"
+
+summary(data$AGEGROUP)
+
+agegroupwave <- c(
+  "1" = "18-21",
+  "2" = "22-25"
+)
+```
+
+
 
 
