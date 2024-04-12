@@ -63,44 +63,110 @@ library(Rmisc)
 ```
 #load Data
 ```{r}
-data  <- read.csv("data_project_1013280_2024_03_14.csv", sep = ";")
+data  <- read.csv("data_project_1013280_2024_03_01.csv", sep = ";")
 ```
 
 #Data preperation
 
+
+##Clean Data hier nochmal drüber schauen
+```{r}
+data2 <- data[!(data$ALTER < 18 | data$ALTER >= 75 | data$ATTENTION_CHECK != 1), ]
+
+table(data2$ATTENTION_CHECK)
+describe(data2$ALTER)
+table(data$ATTENTION_CHECK)
+
+describe(data2)
+```
+
+
 ##Age Groups
 ```{r}
-data$AGEGROUP <- NA
-data$AGEGROUP <- factor(
+data$AGE_GROUP <- NA
+data$AGE_GROUP <- factor(
   data$AGEGROUP,
   levels = c(1,2),
   labels = c("18-29", "30-75")
 )
 
-data$AGEGROUP[which(data$ALTER >= 18 & data$ALTER <=29 )] <- "18-29"
-data$AGEGROUP[which(data$ALTER >= 30 & data$ALTER <= 75 )] <- "30-75"
+data$AGE_GROUP[which(data$ALTER >= 18 & data$ALTER <=29 )] <- "18-29"
+data$AGE_GROUP[which(data$ALTER >= 30 & data$ALTER <= 75 )] <- "30-75"
 
-summary(data$AGEGROUP)
+summary(data$AGE_GROUP)
 
 agegroupwave <- c(
   "1" = "18-21",
   "2" = "22-25"
 )
+```
 
-data$GENDER <- factor(
-data$GENDER,
+##Gender Groups
+```{r}
+data$GENDER_GROUP <- NA
+data$GENDER_GROUP <- factor(
+  data$GENDER_GROUP,
+  levels = c(1,2,3,4),
+  labels = c("Weiblich","Männlich","Divers","Keine Angabe")
+)
+
+data$GENDER_GROUP[which(data$GESCHLECHT == 1)] <- "Weiblich"
+data$GENDER_GROUP[which(data$GESCHLECHT == 2)] <- "Männlich"
+data$GENDER_GROUP[which(data$GESCHLECHT == 3)] <- "Divers"
+data$GENDER_GROUP[which(data$GESCHLECHT == 4)] <- "Keine Angabe"
+
+summary(data$GENDER_GROUP)
+
+#data$GESCHLECHT <- factor(
+#data$GESCHLECHT,
+#levels = c(1,2,3,4),
+#labels = c("Weiblich", "Männlich","Divers","Keine Angabe")
+#)
+```
+
+##Education Groups
+```{r}
+data$EDUCATION_GROUP <- NA
+data$EDUCATION_GROUP <- factor(
+data$EDUCATION_GROUP,
+levels = c(1,2,3,4,5,6,7),
+labels = c("Hauptschulabschluss","Mittlere Reife","Fachhochschulreife","Allgemeine Hochschulreife","Bachelor","Master","Andere")
+)
+
+data$EDUCATION_GROUP[which(data$BILDUNG == 1)] <- "Hauptschulabschluss"
+data$EDUCATION_GROUP[which(data$BILDUNG == 2)] <- "Mittlere Reife"
+data$EDUCATION_GROUP[which(data$BILDUNG == 3)] <- "Fachhochschulreife"
+data$EDUCATION_GROUP[which(data$BILDUNG == 4)] <- "Allgemeine Hochschulreife"
+data$EDUCATION_GROUP[which(data$BILDUNG == 5)] <- "Bachelor"
+data$EDUCATION_GROUP[which(data$BILDUNG == 6)] <- "Master"
+data$EDUCATION_GROUP[which(data$BILDUNG == 7)] <- "Andere"
+
+summary(data$EDUCATION_GROUP)
+```
+```{r}
+data$COUNTRY_GROUP <- NA
+data$COUNTRY_GROUP <- factor(
+data$COUNTRY_GROUP,
 levels = c(1,2,3,4),
-labels = c("Weiblich", "Männlich","Divers","Keine Angabe")
+labels = c("Deutschland","Österreich","Schweiz","Andere")
 )
 
-data$EDUCATION <- factor(
-data$EDUCATION,
-levels = c(1,2,3,4,5,6,7,8),
-labels = c("Hauptschulabschluss","Mittlere Reife","Bachelor","Fachhochschulreife","	Allgemeine Hochschulreife","Bachelor","Master","Andere")
-)
+data$COUNTRY_GROUP[which(data$LAND == 1)] <- "Deutschland"
+data$COUNTRY_GROUP[which(data$LAND == 2)] <- "Österreich"
+data$COUNTRY_GROUP[which(data$LAND == 3)] <- "Schweiz"
+data$COUNTRY_GROUP[which(data$LAND == 4)] <- "Andere"
 
-data$Condition <- factor(data$c_0001, levels = c(1,2,3)
+summary(data$COUNTRY_GROUP)
+```
+
+
+```{r}
+summary(data$c_0001)
+
+data$Condition <- factor(data$c_0001, levels = c(1,2,3))
 labels = c("Individual Benefit", "Social Benefit", "Control Group")
+
+summary(data$Condition)
 ```
 
 
