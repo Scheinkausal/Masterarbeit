@@ -1,5 +1,6 @@
 ---
-title: "Untitled"
+title: "Influence of personal and social benefits on the intention to donate blood in the context of age and the constructs of the Self-Determination Theory - Master Thesis"
+author: "Tim Riester"
 output: html_document
 date: "2024-03-21"
 ---
@@ -85,6 +86,21 @@ agegroupwave <- c(
   "1" = "18-21",
   "2" = "22-25"
 )
+
+data$GENDER <- factor(
+data$GENDER,
+levels = c(1,2,3,4),
+labels = c("Weiblich", "Männlich","Divers","Keine Angabe")
+)
+
+data$EDUCATION <- factor(
+data$EDUCATION,
+levels = c(1,2,3,4,5,6,7,8),
+labels = c("Hauptschulabschluss","Mittlere Reife","Bachelor","Fachhochschulreife","	Allgemeine Hochschulreife","Bachelor","Master","Andere")
+)
+
+data$Condition <- factor(data$c_0001, levels = c(1,2,3)
+labels = c("Individual Benefit", "Social Benefit", "Control Group")
 ```
 
 
