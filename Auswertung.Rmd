@@ -78,6 +78,7 @@ describe(data2$ALTER)
 table(data$ATTENTION_CHECK)
 
 describe(data2)
+
 ```
 
 
@@ -169,6 +170,9 @@ labels = c("Individual Benefit", "Social Benefit", "Control Group")
 summary(data$Condition)
 ```
 
+```{r}
+boxplot(data$INTENTION_1 ~ data$AGE_GROUP)
+```
 
 
 
