@@ -165,6 +165,22 @@ MA_data$COUNTRY_GROUP[which(MA_data$LAND == 4)] <- "Andere"
 
 summary(MA_data$COUNTRY_GROUP)
 ```
+#Creat Index
+```{r}
+psych::alpha(subset(MA_data, select = c(AMOTIVATION_1,AMOTIVATION_2,AMOTIVATION_3)))
+
+psych::alpha(subset(MA_data, select = c(EXTERNAL_REGULATION_1,EXTERNAL_REGULATION_2,EXTERNAL_REGULATION_2)))
+
+psych::alpha(subset(MA_data, select = c(INTROJECTED_REGULATION_1,INTROJECTED_REGULATION_2,INTROJECTED_REGULATION_3)))
+
+psych::alpha(subset(MA_data, select = c(IDENTIFIED_REGUALTION_1,IDENTIFIED_REGUALTION_2,IDENTIFIED_REGUALTION_3)))
+
+psych::alpha(subset(MA_data, select = c(INTEGRATED_REGULATION_1,INTEGRATED_REGULATION_2,INTEGRATED_REGULATION_3)))
+
+psych::alpha(subset(MA_data, select = c(INTRINSIC_REGUALTION_1,INTRINSIC_REGUALTION_2,INTRINSIC_REGUALTION_3)))
+
+psych::alpha(subset(MA_data, select = c(INTENTION_1,INTENTION_2,INTENTION_3)))
+```
 
 
 ```{r}
