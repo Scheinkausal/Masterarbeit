@@ -150,6 +150,7 @@ MA_data$EDUCATION_GROUP[which(MA_data$BILDUNG == 7)] <- "Andere"
 
 summary(MA_data$EDUCATION_GROUP)
 ```
+#Country Groups
 ```{r}
 MA_data$COUNTRY_GROUP <- NA
 MA_data$COUNTRY_GROUP <- factor(
@@ -165,6 +166,46 @@ MA_data$COUNTRY_GROUP[which(MA_data$LAND == 4)] <- "Andere"
 
 summary(MA_data$COUNTRY_GROUP)
 ```
+#Blood Donation Behavior Group
+```{r}
+MA_data$BDB_GROUP <- NA
+MA_data$BDB_GROUP <- factor(
+MA_data$BDB_GROUP,
+levels = c(1,2,3),
+labels = c("Ja","Nein","Keine Angabe")
+)
+
+MA_data$BDB_GROUP[which(MA_data$BLUTSPENDEVERHALTEN == 1)] <- "Ja"
+MA_data$BDB_GROUP[which(MA_data$BLUTSPENDEVERHALTEN == 2)] <- "Nein"
+MA_data$BDB_GROUP[which(MA_data$BLUTSPENDEVERHALTEN == 3)] <- "Keine Angabe"
+
+table(MA_data$BDB_GROUP)
+
+```
+#Blood Donor Organisation Groups
+```{r}
+MA_data$BDO_GROUP <- NA
+MA_data$BDO_GROUP <- factor(
+MA_data$BDO_GROUP,
+levels = c(1,3,4),
+labels = c("Deutsches Rotes Kreuz","Weiß ich nicht","Andere")
+)
+
+MA_data$BDO_GROUP[which(MA_data$BLUTSPENDEORGANISATION == 1)] <- "Deutsches Rotes Kreuz"
+MA_data$BDO_GROUP[which(MA_data$BLUTSPENDEORGANISATION == 3)] <- "Weiß ich nicht"
+MA_data$BDO_GROUP[which(MA_data$BLUTSPENDEORGANISATION == 4)] <- "Andere"
+
+table(MA_data$BDO_GROUP)
+```
+
+#Experimental Conditions
+```{r}
+MA_data$Condition <- factor(MA_data$c_0001, levels = c(1,2,3))
+labels = c("Individual Benefit", "Social Benefit", "Kontrollgruppe")
+
+table(MA_data$Condition)
+```
+
 #Creat Index
 ```{r}
 psych::alpha(subset(MA_data, select = c(AMOTIVATION_1,AMOTIVATION_2,AMOTIVATION_3)))
@@ -192,9 +233,16 @@ labels = c("Individual Benefit", "Social Benefit", "Control Group")
 summary(data$Condition)
 ```
 
+#Probierstation
 ```{r}
 boxplot(data$INTENTION_1 ~ data$AGE_GROUP)
 table(MA_data$INTEGRATED_REGULATION_1[MA_data$ALTER<=29])
+
+boxplot(data$INTENTION_1 ~ MA_data$c_0001)
+
+table(MA_data$c_0001)
+
+mean(MA_data$INTENTION_1[MA_data$Condition==3])
 ```
 
 
