@@ -206,6 +206,50 @@ labels = c("Individual Benefit", "Social Benefit", "Kontrollgruppe")
 table(MA_data$Condition)
 ```
 
+# Descriptives
+
+## Demographics
+
+The following table shows the distribution of survey participants by demographics and experimental condition (1 = Individual Benefit, 2 = Social Benefit, 3 = Control Group)
+
+```{r}
+MA_data <- apply_labels(MA_data,
+AGE_GROUP = "Age group",
+GENDER_GROUP = "Gender",
+EDUCATION_GROUP = "Level of education",
+COUNTRY_GROUP = "Residence country")
+
+html_code <- MA_data %>%
+tab_cells(AGE_GROUP,GENDER_GROUP,EDUCATION_GROUP) %>%
+tab_cols(total(label = "Sum"),Condition) %>%
+tab_stat_cases(total_label = "All") %>%
+tab_pivot() %>%
+htmlTable(align = "c",css.cell = c("width: 400px"))
+
+#this code must be adapted according to the personal file path
+
+file_path <- "C:\\Users\\timri\\Desktop\\Uni Vorlesungen\\Master GeKo\\Masterarbeit\\Statistiken und Auswertung\\Auswertung"
+file_name <- "Deskriptiv.html"
+
+writeLines(html_code, file.path("C:\\Users\\timri\\Desktop\\Uni Vorlesungen\\Master GeKo\\Masterarbeit\\Statistiken und Auswertung\\Auswertung", "Deskriptiv.html"))
+
+```
+
+#Overall percentages for gender and education are shown such as descriptive data for age by condition.
+```{r}
+N <- nrow(MA_data)
+ageRange_min <- min(MA_data$ALTER)
+ageRange_max <- max(MA_data$ALTER)
+ageMean <- mean(MA_data$ALTER)
+ageSD <- sd(MA_data$ALTER)
+ageMedian <- median(MA_data$ALTER)
+
+round(table(MA_data$GESCHLECHT)/N*100,2)
+round(table(MA_data$BILDUNG)/N*100,2)
+
+describeBy(MA_data$ALTER,MA_data$Condition)
+```
+
 #Creat Index
 ```{r}
 psych::alpha(subset(MA_data, select = c(AMOTIVATION_1,AMOTIVATION_2,AMOTIVATION_3)))
