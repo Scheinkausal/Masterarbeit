@@ -207,11 +207,11 @@ labels = c("Individueller Anreiz", "Sozialer Anreiz", "Kontrollgruppe")
 #table(MA_data$Condition)
 ```
 
-```
 
-# Descriptives
 
-## Demographics
+Descriptives
+
+Demographics
 
 The following table shows the distribution of survey participants by demographics and experimental condition (1 = Individual Benefit, 2 = Social Benefit, 3 = Control Group)
 
@@ -235,7 +235,6 @@ htmlTable(align = "c",css.cell = c("width: 400px"))
 #file_name <- "Deskriptiv.html"
 
 #writeLines(html_code, file.path("C:\\Users\\timri\\Desktop\\Uni Vorlesungen\\Master GeKo\\Masterarbeit\\Statistiken und Auswertung\\Auswertung", "Deskriptiv.html"))
-
 ```
 
 ```{r}
@@ -272,7 +271,6 @@ describeBy(MA_data$ALTER,MA_data$Condition)
 ```
 #Determinants Self-Determination Theory
 #Creat Index
-
 ```{r}
 #AMOTIVATION
 MA_data$AMOTIVATION_SUM <- (MA_data$AMOTIVATION_1 + MA_data$AMOTIVATION_2 + MA_data$AMOTIVATION_3) / 3
@@ -315,8 +313,8 @@ MA_data$INTRINSIC_REGUALTION_SUM <- (MA_data$INTRINSIC_REGUALTION_1 + MA_data$IN
 psych::alpha(subset(MA_data, select = c(INTRINSIC_REGUALTION_1,INTRINSIC_REGUALTION_2,INTRINSIC_REGUALTION_3)))
 
 #Crombachs α : 0.77
-
 ```
+
 #Creat Index Intention
 ```{r}
 MA_data$INTENTION_SUM <- (MA_data$INTENTION_1 + MA_data$INTENTION_2 + MA_data$INTENTION_3) / 3
@@ -326,6 +324,40 @@ psych::alpha(subset(MA_data, select = c(INTENTION_1,INTENTION_2,INTENTION_3)))
 #Crombachs α : 0.98
 ```
 
+#Das kann eigentlich raus
+```{r}
+#H0 : normal distribution if p > 0.05
+CG <- subset(MA_data, MA_data$Condition == 3)
+EG2 <- subset(MA_data, MA_data$Condition == 2)
+EG1 <- subset(MA_data, MA_data$Condition == 1)
+
+#AMOTIVATION
+par(mfrow=c(1,2))
+shapiro.test(CG$AMOTIVATION_SUM)
+hist(scale(CG$AMOTIVATION_SUM))
+shapiro.test(EG1$AMOTIVATION_SUM)
+hist(scale(EG1$AMOTIVATION_SUM))
+shapiro.test(EG2$AMOTIVATION_SUM)
+hist(scale(EG2$AMOTIVATION_SUM))
+
+#EXTERNAL_REGULATION
+par(mfrow=c(1,2))
+shapiro.test(CG$EXTERNAL_REGULATION_SUM)
+hist(scale(CG$EXTERNAL_REGULATION_SUM))
+shapiro.test(EG1$EXTERNAL_REGULATION_SUM)
+hist(scale(EG1$EXTERNAL_REGULATION_SUM))
+shapiro.test(EG2$EXTERNAL_REGULATION_SUM)
+hist(scale(EG2$EXTERNAL_REGULATION_SUM))
+```
+
+#ANOVA Testen
+```{r}
+ANOVA_BENEFIT <- aov(MA_data$INTENTION_SUM ~ MA_data$Condition + MA_data$AGE_GROUP)
+summary(ANOVA_BENEFIT)
+t.test(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP)
+
+Anova(ANOVA_BENEFIT, type=3)
+```
 
 
 #Probierstation
@@ -338,6 +370,13 @@ boxplot(data$INTENTION_1 ~ MA_data$c_0001)
 table(MA_data$c_0001)
 
 mean(MA_data$INTENTION_1[MA_data$Condition==3])
+
+describe(MA_data$AMOTIVATION_SUM)
+summary(MA_data$AMOTIVATION_SUM)
+
+hist(MA_data$AMOTIVATION_SUM)
+
+boxplot(INTENTION_SUM ~ Condition + AGE_GROUP, data=MA_data)
 ```
 
 
