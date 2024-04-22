@@ -107,6 +107,7 @@ agegroupwave <- c(
   "1" = "18-29",
   "2" = "30-75"
 )
+
 ```
 
 ##Gender Groups
@@ -323,42 +324,103 @@ psych::alpha(subset(MA_data, select = c(INTENTION_1,INTENTION_2,INTENTION_3)))
 
 #Crombachs α : 0.98
 ```
+#Analysis of the preconditions 
 
-#Das kann eigentlich raus
+#Test for the prerequisite of a two-factorial ANOVA
+```{r}
+#Requirement 1: Metric scaling of the AV : Yes
+
+#Requirement 2: Homogeneity of variances
+
+leveneTest(INTENTION_SUM ~ Condition*AGE_GROUP, data = MA_data)
+
+#The variances are not equal, as p < 0.05. Violation of the homogeneity assumption.
+
+```
+#ANOVA Testen
+```{r}
+ANOVA_BENEFIT <- aov(INTENTION_SUM ~ Condition + AGE_GROUP + Condition*AGE_GROUP, data = MA_data)
+
+ANOVA_BENEFIT_ONE_WAY <- oneway.test(INTENTION_SUM ~ Condition + AGE_GROUP + Condition*AGE_GROUP, data = MA_data, var.equal = FALSE)
+print(ANOVA_BENEFIT_ONE_WAY)
+
+plot(ANOVA_BENEFIT, 2)
+
+#Requirement 3: Assumption of a normal distribution can only be partially accepted
+```
+#Prerequisite for a t-test with independent samples
 ```{r}
 #H0 : normal distribution if p > 0.05
-CG <- subset(MA_data, MA_data$Condition == 3)
-EG2 <- subset(MA_data, MA_data$Condition == 2)
-EG1 <- subset(MA_data, MA_data$Condition == 1)
+Young <- subset(MA_data, MA_data$AGE_GROUP == "18-29")
+Old <- subset(MA_data, MA_data$AGE_GROUP == "30-75")
 
 #AMOTIVATION
 par(mfrow=c(1,2))
-shapiro.test(CG$AMOTIVATION_SUM)
-hist(scale(CG$AMOTIVATION_SUM))
-shapiro.test(EG1$AMOTIVATION_SUM)
-hist(scale(EG1$AMOTIVATION_SUM))
-shapiro.test(EG2$AMOTIVATION_SUM)
-hist(scale(EG2$AMOTIVATION_SUM))
+shapiro.test(Young$AMOTIVATION_SUM)
+hist(scale(Young$AMOTIVATION_SUM))
+shapiro.test(Old$AMOTIVATION_SUM)
+hist(scale(Old$AMOTIVATION_SUM))
 
 #EXTERNAL_REGULATION
 par(mfrow=c(1,2))
-shapiro.test(CG$EXTERNAL_REGULATION_SUM)
-hist(scale(CG$EXTERNAL_REGULATION_SUM))
-shapiro.test(EG1$EXTERNAL_REGULATION_SUM)
-hist(scale(EG1$EXTERNAL_REGULATION_SUM))
-shapiro.test(EG2$EXTERNAL_REGULATION_SUM)
-hist(scale(EG2$EXTERNAL_REGULATION_SUM))
+shapiro.test(Young$EXTERNAL_REGULATION_SUM)
+hist(scale(Young$EXTERNAL_REGULATION_SUM))
+shapiro.test(Old$EXTERNAL_REGULATION_SUM)
+hist(scale(Old$EXTERNAL_REGULATION_SUM))
+
+#INTROJECTED_REGULATION
+par(mfrow=c(1,2))
+shapiro.test(Young$INTROJECTED_REGULATION_SUM)
+hist(scale(Young$INTROJECTED_REGULATION_SUM))
+shapiro.test(Old$INTROJECTED_REGULATION_SUM)
+hist(scale(Old$INTROJECTED_REGULATION_SUM))
+
+#IDENTIFIED_REGUALTION
+par(mfrow=c(1,2))
+shapiro.test(Young$IDENTIFIED_REGUALTION_SUM)
+hist(scale(Young$IDENTIFIED_REGUALTION_SUM))
+shapiro.test(Old$IDENTIFIED_REGUALTION_SUM)
+hist(scale(Old$IDENTIFIED_REGUALTION_SUM))
+
+#INTEGRATED_REGULATION
+par(mfrow=c(1,2))
+shapiro.test(Young$INTEGRATED_REGULATION_SUM)
+hist(scale(Young$INTEGRATED_REGULATION_SUM))
+shapiro.test(Old$INTEGRATED_REGULATION_SUM)
+hist(scale(Old$INTEGRATED_REGULATION_SUM))
+
+#INTRINSIC_REGUALTION
+par(mfrow=c(1,2))
+shapiro.test(Young$INTRINSIC_REGUALTION_SUM)
+hist(scale(Young$INTRINSIC_REGUALTION_SUM))
+shapiro.test(Old$INTRINSIC_REGUALTION_SUM)
+hist(scale(Old$INTRINSIC_REGUALTION_SUM))
+
+#equality of variances 
+LeveneTest(MA_data$AMOTIVATION_SUM, MA_data$Condition)
+LeveneTest(MA_data$EXTERNAL_REGULATION_SUM, MA_data$AGE_GROUP)
+LeveneTest(MA_data$INTROJECTED_REGULATION_SUM, MA_data$AGE_GROUP)
+LeveneTest(MA_data$IDENTIFIED_REGUALTION_SUM, MA_data$AGE_GROUP)
+LeveneTest(MA_data$INTEGRATED_REGULATION_SUM, MA_data$AGE_GROUP)
+LeveneTest(MA_data$INTRINSIC_REGUALTION_SUM, MA_data$AGE_GROUP)
+
+#equal variance is given
 ```
 
-#ANOVA Testen
+
+
+
+# Preregistered analysis
+The following preregistered hypotheses were tested for significance within the code.
+
+#ANOVA Experiment
 ```{r}
-ANOVA_BENEFIT <- aov(MA_data$INTENTION_SUM ~ MA_data$Condition + MA_data$AGE_GROUP)
-summary(ANOVA_BENEFIT)
-t.test(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP)
+#Since there is no homogeneity of variance, the standard errors must be calculated "robustly". This function ensures that the ANOVA is less susceptible to unequal variances
+
+summary(ANOVA_BENEFIT, robust = TRUE)
 
 Anova(ANOVA_BENEFIT, type=3)
 ```
-
 
 #Probierstation
 ```{r}
