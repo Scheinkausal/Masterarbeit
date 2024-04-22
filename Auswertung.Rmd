@@ -202,9 +202,11 @@ MA_data$BDO_GROUP[which(MA_data$BLUTSPENDEORGANISATION == 4)] <- "Andere"
 #Experimental Conditions
 ```{r}
 MA_data$Condition <- factor(MA_data$c_0001, levels = c(1,2,3))
-labels = c("Individual Benefit", "Social Benefit", "Kontrollgruppe")
+labels = c("Individueller Anreiz", "Sozialer Anreiz", "Kontrollgruppe")
 
 #table(MA_data$Condition)
+```
+
 ```
 
 # Descriptives
@@ -268,33 +270,63 @@ round(table(MA_data$BILDUNG)/N*100,2)
 
 describeBy(MA_data$ALTER,MA_data$Condition)
 ```
-
+#Determinants Self-Determination Theory
 #Creat Index
+
 ```{r}
+#AMOTIVATION
+MA_data$AMOTIVATION_SUM <- (MA_data$AMOTIVATION_1 + MA_data$AMOTIVATION_2 + MA_data$AMOTIVATION_3) / 3
+
 psych::alpha(subset(MA_data, select = c(AMOTIVATION_1,AMOTIVATION_2,AMOTIVATION_3)))
+
+#Crombachs α : 0.53
+
+#EXTERNAL_REGULATION
+MA_data$EXTERNAL_REGULATION_SUM <- (MA_data$EXTERNAL_REGULATION_1 + MA_data$EXTERNAL_REGULATION_2 + MA_data$EXTERNAL_REGULATION_3) / 3
 
 psych::alpha(subset(MA_data, select = c(EXTERNAL_REGULATION_1,EXTERNAL_REGULATION_2,EXTERNAL_REGULATION_2)))
 
+#Crombachs α : 0.85
+
+#INTROJECTED_REGULATION
+MA_data$INTROJECTED_REGULATION_SUM <- (MA_data$INTROJECTED_REGULATION_1 + MA_data$INTROJECTED_REGULATION_2 + MA_data$INTROJECTED_REGULATION_3) / 3
+
 psych::alpha(subset(MA_data, select = c(INTROJECTED_REGULATION_1,INTROJECTED_REGULATION_2,INTROJECTED_REGULATION_3)))
+
+#Crombachs α : 0.80
+
+#IDENTIFIED_REGUALTION
+MA_data$IDENTIFIED_REGUALTION_SUM <- (MA_data$IDENTIFIED_REGUALTION_1 + MA_data$IDENTIFIED_REGUALTION_2 + MA_data$IDENTIFIED_REGUALTION_3) / 3
 
 psych::alpha(subset(MA_data, select = c(IDENTIFIED_REGUALTION_1,IDENTIFIED_REGUALTION_2,IDENTIFIED_REGUALTION_3)))
 
+#Crombachs α : 0.52
+
+#INTEGRATED_REGULATION
+MA_data$INTEGRATED_REGULATION_SUM <- (MA_data$INTEGRATED_REGULATION_1 + MA_data$INTEGRATED_REGULATION_2 + MA_data$INTEGRATED_REGULATION_3) / 3
+
 psych::alpha(subset(MA_data, select = c(INTEGRATED_REGULATION_1,INTEGRATED_REGULATION_2,INTEGRATED_REGULATION_3)))
+
+#Crombachs α : 0.81
+
+#INTRINSIC_REGUALTION
+MA_data$INTRINSIC_REGUALTION_SUM <- (MA_data$INTRINSIC_REGUALTION_1 + MA_data$INTRINSIC_REGUALTION_2 + MA_data$INTRINSIC_REGUALTION_3) / 3
 
 psych::alpha(subset(MA_data, select = c(INTRINSIC_REGUALTION_1,INTRINSIC_REGUALTION_2,INTRINSIC_REGUALTION_3)))
 
-psych::alpha(subset(MA_data, select = c(INTENTION_1,INTENTION_2,INTENTION_3)))
+#Crombachs α : 0.77
+
 ```
-
-
+#Creat Index Intention
 ```{r}
-summary(data$c_0001)
+MA_data$INTENTION_SUM <- (MA_data$INTENTION_1 + MA_data$INTENTION_2 + MA_data$INTENTION_3) / 3
 
-data$Condition <- factor(data$c_0001, levels = c(1,2,3))
-labels = c("Individual Benefit", "Social Benefit", "Control Group")
+psych::alpha(subset(MA_data, select = c(INTENTION_1,INTENTION_2,INTENTION_3)))
 
-summary(data$Condition)
+#Crombachs α : 0.98
 ```
+
+
 
 #Probierstation
 ```{r}
