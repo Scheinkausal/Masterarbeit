@@ -68,13 +68,13 @@ data  <- read.csv("data_project_1013280_2024_04_17.csv", sep = ";")
 ```
 #Overview
 ```{r}
-describe(data)
+#describe(data)
 
-table(data$ALTER)
+#table(data$ALTER)
 
-table(data$ATTENTION_CHECK)
+#table(data$ATTENTION_CHECK)
 
-table(data$ALTER, data$ATTENTION_CHECK != 1)
+#table(data$ALTER, data$ATTENTION_CHECK != 1)
 ```
 #Of the total n = 405 participants, two people stated an age of under 18 or over 75. In addition, 7 participants did not pass the Attention Check. There were no overlaps between the participants. 
 
@@ -180,7 +180,7 @@ MA_data$BDB_GROUP[which(MA_data$BLUTSPENDEVERHALTEN == 1)] <- "Ja"
 MA_data$BDB_GROUP[which(MA_data$BLUTSPENDEVERHALTEN == 2)] <- "Nein"
 MA_data$BDB_GROUP[which(MA_data$BLUTSPENDEVERHALTEN == 3)] <- "Keine Angabe"
 
-table(MA_data$BDB_GROUP)
+#table(MA_data$BDB_GROUP)
 
 ```
 #Blood Donor Organisation Groups
@@ -196,7 +196,7 @@ MA_data$BDO_GROUP[which(MA_data$BLUTSPENDEORGANISATION == 1)] <- "Deutsches Rote
 MA_data$BDO_GROUP[which(MA_data$BLUTSPENDEORGANISATION == 3)] <- "Weiß ich nicht"
 MA_data$BDO_GROUP[which(MA_data$BLUTSPENDEORGANISATION == 4)] <- "Andere"
 
-table(MA_data$BDO_GROUP)
+#table(MA_data$BDO_GROUP)
 ```
 
 #Experimental Conditions
@@ -204,7 +204,7 @@ table(MA_data$BDO_GROUP)
 MA_data$Condition <- factor(MA_data$c_0001, levels = c(1,2,3))
 labels = c("Individual Benefit", "Social Benefit", "Kontrollgruppe")
 
-table(MA_data$Condition)
+#table(MA_data$Condition)
 ```
 
 # Descriptives
@@ -229,20 +229,12 @@ htmlTable(align = "c",css.cell = c("width: 400px"))
 
 #this code must be adapted according to the personal file path
 
-file_path <- "C:\\Users\\timri\\Desktop\\Uni Vorlesungen\\Master GeKo\\Masterarbeit\\Statistiken und Auswertung\\Auswertung"
-file_name <- "Deskriptiv.html"
+#file_path <- "C:\\Users\\timri\\Desktop\\Uni Vorlesungen\\Master GeKo\\Masterarbeit\\Statistiken und Auswertung\\Auswertung"
+#file_name <- "Deskriptiv.html"
 
-writeLines(html_code, file.path("C:\\Users\\timri\\Desktop\\Uni Vorlesungen\\Master GeKo\\Masterarbeit\\Statistiken und Auswertung\\Auswertung", "Deskriptiv.html"))
-
-```
-#Test kann eigentlich gelöscht werden
-```{r}
-# label(MA_data_tabele$ALTER) <- "Alter"
-
-table1(~ ALTER | Condition, data=MA_data_tabele, overall=c(left="Total"))
+#writeLines(html_code, file.path("C:\\Users\\timri\\Desktop\\Uni Vorlesungen\\Master GeKo\\Masterarbeit\\Statistiken und Auswertung\\Auswertung", "Deskriptiv.html"))
 
 ```
-
 
 ```{r}
 MA_data_tabele <- MA_data
@@ -256,7 +248,7 @@ label(MA_data_tabele$BDO_GROUP) <- "Blutspendeorganisation"
 
 units(MA_data_tabele$ALTER)       <- "Jahre"
 
-caption  <- "Basic stats"
+caption  <- "Deskriptive Daten"
 #footnote <- "ᵃ Also known as Breslow thickness"
 
 table1(~ GENDER_GROUP + ALTER + EDUCATION_GROUP + COUNTRY_GROUP + BDB_GROUP + BDO_GROUP | Condition, data=MA_data_tabele, overall=c(left="Total"), caption=caption) #footnote=footnote)
