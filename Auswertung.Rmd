@@ -455,17 +455,21 @@ boxplot(MA_data$IDENTIFIED_REGUALTION_SUM ~ MA_data$AGE_GROUP)
 boxplot(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP)
 boxplot(MA_data$INTRINSIC_REGUALTION_SUM ~ MA_data$AGE_GROUP)
 
-coin::wilcox_test(MA_data$AMOTIVATION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
+T_Test_AMOTIVATION <- coin::wilcox_test(MA_data$AMOTIVATION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
-coin::wilcox_test(MA_data$EXTERNAL_REGULATION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
+T_Test_EXTERNAL_REGULATION <- coin::wilcox_test(MA_data$EXTERNAL_REGULATION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
-coin::wilcox_test(MA_data$INTROJECTED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+T_Test_INTROJECTED_REGULATION <- coin::wilcox_test(MA_data$INTROJECTED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
-coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+T_Test_IDENTIFIED_REGUALTION <- coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
-coin::wilcox_test(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+T_Test_INTEGRATED_REGULATIO <- coin::wilcox_test(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
-coin::wilcox_test(MA_data$INTRINSIC_REGUALTION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+T_Test_INTRINSIC_REGUALTION <- coin::wilcox_test(MA_data$INTRINSIC_REGUALTION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+
+#Effect Size
+
+wilcox_effsize(T_Test_AMOTIVATION)
 ```
 
 
