@@ -60,11 +60,19 @@ library(carData)
 library(car)
 library(Rmisc)
 library(boot)
-
+library(rstatix)
 ```
 #load Data
 ```{r}
 data  <- read.csv("data_project_1013280_2024_04_17.csv", sep = ";")
+```
+
+#Of the total n = 405 participants, two people stated an age of under 18 or over 75. In addition, 7 participants did not pass the Attention Check. There were no overlaps between the participants. 
+
+#Clean Data
+```{r}
+MA_data <- subset(data, ALTER >= 18 & ALTER <= 75 & ATTENTION_CHECK == 1)
+
 ```
 #Overview
 ```{r}
@@ -75,12 +83,12 @@ data  <- read.csv("data_project_1013280_2024_04_17.csv", sep = ";")
 #table(data$ATTENTION_CHECK)
 
 #table(data$ALTER, data$ATTENTION_CHECK != 1)
-```
-#Of the total n = 405 participants, two people stated an age of under 18 or over 75. In addition, 7 participants did not pass the Attention Check. There were no overlaps between the participants. 
 
-#Clean Data
-```{r}
-MA_data <- subset(data, ALTER >= 18 & ALTER <= 75 & ATTENTION_CHECK == 1)
+#head(MA_data)
+
+#unique(MA_data$AGE_GROUP)
+
+#show(MA_data$AGE_GROUP)
 ```
 
 #Data preperation
@@ -429,6 +437,8 @@ summary(ANOVA_BENEFIT, robust = TRUE)
 Anova(ANOVA_BENEFIT, type=3)
 
 boxplot(INTENTION_SUM ~ AGE_GROUP, col = c("blue", "green"), data=MA_data)
+
+#ggboxplot(MA_data, x= "INTENTION_SUM", y = "AGE_GROUP", color = "green")
 ```
 H1 must be discarded
 H2 can be assumed
@@ -455,23 +465,35 @@ boxplot(MA_data$IDENTIFIED_REGUALTION_SUM ~ MA_data$AGE_GROUP)
 boxplot(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP)
 boxplot(MA_data$INTRINSIC_REGUALTION_SUM ~ MA_data$AGE_GROUP)
 
-T_Test_AMOTIVATION <- coin::wilcox_test(MA_data$AMOTIVATION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
+coin::wilcox_test(MA_data$AMOTIVATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
-T_Test_EXTERNAL_REGULATION <- coin::wilcox_test(MA_data$EXTERNAL_REGULATION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
+coin::wilcox_test(MA_data$EXTERNAL_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
-T_Test_INTROJECTED_REGULATION <- coin::wilcox_test(MA_data$INTROJECTED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+coin::wilcox_test(MA_data$INTROJECTED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
-T_Test_IDENTIFIED_REGUALTION <- coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
-T_Test_INTEGRATED_REGULATIO <- coin::wilcox_test(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+coin::wilcox_test(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
-T_Test_INTRINSIC_REGUALTION <- coin::wilcox_test(MA_data$INTRINSIC_REGUALTION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+coin::wilcox_test(MA_data$INTRINSIC_REGUALTION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
 #Effect Size
 
-wilcox_effsize(T_Test_AMOTIVATION)
-```
+wilcox_effsize(MA_data, AMOTIVATION_SUM ~ AGE_GROUP, alternative = "greater", mu = 0)
+wilcox_effsize(MA_data, EXTERNAL_REGULATION_SUM ~ AGE_GROUP, alternative = "greater", mu = 0)
+wilcox_effsize(MA_data, INTROJECTED_REGULATION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
+wilcox_effsize(MA_data, IDENTIFIED_REGUALTION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
+wilcox_effsize(MA_data, INTEGRATED_REGULATION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
+wilcox_effsize(MA_data, INTRINSIC_REGUALTION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
 
+```
+#T tests dependent on blood donation behaviour
+
+```{r}
+Only_BDB_Yes <- subset(MA_data, BDB_GROUP == "Ja")
+
+Only_BDB_No <- subset(MA_data, BDB_GROUP == "Nein")
+```
 
 
 
@@ -492,6 +514,23 @@ summary(MA_data$AMOTIVATION_SUM)
 hist(MA_data$AMOTIVATION_SUM)
 
 boxplot(INTENTION_SUM ~ Condition + AGE_GROUP, data=MA_data)
+
+#mal schauen, ob das Blutspendeverhalten einen Einfluss hat
+
+boxplot(MA_data$INTENTION_SUM ~ MA_data$BDB_GROUP)
+
+boxplot(Only_BDB_Yes$INTENTION_SUM ~ Only_BDB_Yes$AGE_GROUP)
+
+mean(Only_BDB_Yes$INTENTION_SUM[Only_BDB_Yes$AGE_GROUP == "30-75"],na.rm = T)
+
+coin::wilcox_test(Only_BDB_Yes$AMOTIVATION_SUM ~ Only_BDB_Yes$AGE_GROUP, data = Only_BDB_Yes, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
+
+wilcox_effsize(Only_BDB_Yes, AMOTIVATION_SUM ~ AGE_GROUP, alternative = "greater", mu = 0)
+
+#Für Alt
+boxplot(Only_BDB_No$INTENTION_SUM ~ Only_BDB_No$AGE_GROUP)
+
+describe(Only_BDB_No)
 ```
 
 
