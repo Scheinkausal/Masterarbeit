@@ -24,7 +24,7 @@ summary(cars)
 You can also embed plots, for example:
 
 ```{r pressure, echo=FALSE}
-plot(pressure)
+#plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
@@ -206,6 +206,7 @@ MA_data$Condition <- factor(MA_data$c_0001, levels = c(1,2,3))
 labels = c("Individueller Anreiz", "Sozialer Anreiz", "Kontrollgruppe")
 
 #table(MA_data$Condition)
+#summary(data$c_0001)
 ```
 
 
@@ -413,6 +414,12 @@ LeveneTest(MA_data$INTRINSIC_REGUALTION_SUM, MA_data$AGE_GROUP)
 # Preregistered analysis
 The following preregistered hypotheses were tested for significance within the code.
 
+H1 Benefit Hypothesis(MainEffect):The willingness to donate blood increases significantly when an incentive is provided
+
+H2 Age Hypothesis(MainEffect):The older the person,the higher the Blood donation intention
+
+H3 Interaction Hypothesis(Interaction):In contrast to the social incentive, the individual incentive increases the willingness to donate blood significantly more in younger people than in older people
+
 #ANOVA Experiment
 ```{r}
 #Since there is no homogeneity of variance, the standard errors must be calculated "robustly". This function ensures that the ANOVA is less susceptible to unequal variances
@@ -420,7 +427,49 @@ The following preregistered hypotheses were tested for significance within the c
 summary(ANOVA_BENEFIT, robust = TRUE)
 
 Anova(ANOVA_BENEFIT, type=3)
+
+boxplot(INTENTION_SUM ~ AGE_GROUP, col = c("blue", "green"), data=MA_data)
 ```
+H1 must be discarded
+H2 can be assumed
+H3 must be discarded
+
+#Preregistered analysis Self-Determination Theory
+
+H4 Amotivation Hypothesis: Amotivation is significantly higher in the younger age category than in the older one 
+
+H5 Extrinsic Hypothesis: the younger the participants, the more extrinsic the motivation factor of the self-determination theory
+
+```{r}
+describeBy(MA_data$AMOTIVATION_SUM, MA_data$AGE_GROUP)
+describeBy(MA_data$EXTERNAL_REGULATION_SUM, MA_data$AGE_GROUP)
+describeBy(MA_data$INTROJECTED_REGULATION_SUM, MA_data$AGE_GROUP)
+describeBy(MA_data$IDENTIFIED_REGUALTION_SUM, MA_data$AGE_GROUP)
+describeBy(MA_data$INTEGRATED_REGULATION_SUM, MA_data$AGE_GROUP)
+describeBy(MA_data$INTRINSIC_REGUALTION_SUM, MA_data$AGE_GROUP)
+
+boxplot(MA_data$AMOTIVATION_SUM ~ MA_data$AGE_GROUP)
+boxplot(MA_data$EXTERNAL_REGULATION_SUM ~ MA_data$AGE_GROUP)
+boxplot(MA_data$INTROJECTED_REGULATION_SUM ~ MA_data$AGE_GROUP)
+boxplot(MA_data$IDENTIFIED_REGUALTION_SUM ~ MA_data$AGE_GROUP)
+boxplot(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP)
+boxplot(MA_data$INTRINSIC_REGUALTION_SUM ~ MA_data$AGE_GROUP)
+
+coin::wilcox_test(MA_data$AMOTIVATION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
+
+coin::wilcox_test(MA_data$EXTERNAL_REGULATION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
+
+coin::wilcox_test(MA_data$INTROJECTED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+
+coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+
+coin::wilcox_test(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+
+coin::wilcox_test(MA_data$INTRINSIC_REGUALTION_SUM ~ MA_data$AGE_GROUP, data = data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+```
+
+
+
 
 #Probierstation
 ```{r}
