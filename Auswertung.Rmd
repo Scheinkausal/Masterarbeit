@@ -487,6 +487,16 @@ wilcox_effsize(MA_data, INTEGRATED_REGULATION_SUM ~ AGE_GROUP, alternative = "le
 wilcox_effsize(MA_data, INTRINSIC_REGUALTION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
 
 ```
+#Correlations
+```{r}
+cor.test(MA_data$ALTER, MA_data$AMOTIVATION_SUM)
+cor.test(MA_data$ALTER, MA_data$EXTERNAL_REGULATION_SUM)
+cor.test(MA_data$ALTER, MA_data$INTROJECTED_REGULATION_SUM)
+cor.test(MA_data$ALTER, MA_data$IDENTIFIED_REGUALTION_SUM)
+cor.test(MA_data$ALTER, MA_data$INTEGRATED_REGULATION_SUM)
+cor.test(MA_data$ALTER, MA_data$INTRINSIC_REGUALTION_SUM)
+```
+
 #T tests dependent on blood donation behaviour
 
 ```{r}
