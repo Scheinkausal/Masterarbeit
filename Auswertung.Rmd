@@ -350,10 +350,15 @@ leveneTest(INTENTION_SUM ~ Condition*AGE_GROUP, data = MA_data)
 ```{r}
 ANOVA_BENEFIT <- aov(INTENTION_SUM ~ Condition + AGE_GROUP + Condition*AGE_GROUP, data = MA_data)
 
+nv <- lm(INTENTION_SUM ~ Condition*AGE_GROUP, data = MA_data)
+
+
 ANOVA_BENEFIT_ONE_WAY <- oneway.test(INTENTION_SUM ~ Condition + AGE_GROUP + Condition*AGE_GROUP, data = MA_data, var.equal = FALSE)
 print(ANOVA_BENEFIT_ONE_WAY)
 
-plot(ANOVA_BENEFIT, 2)
+ggqqplot(residuals(nv))
+#plot(ANOVA_BENEFIT, 2)
+
 
 #Requirement 3: Assumption of a normal distribution can only be partially accepted
 ```
@@ -436,13 +441,19 @@ summary(ANOVA_BENEFIT, robust = TRUE)
 
 Anova(ANOVA_BENEFIT, type=3)
 
-boxplot(INTENTION_SUM ~ AGE_GROUP, col = c("blue", "green"), data=MA_data)
+#boxplot(INTENTION_SUM ~ AGE_GROUP, col = c("blue", "green"), data=MA_data)
 
 #ggboxplot(MA_data, x= "INTENTION_SUM", y = "AGE_GROUP", color = "green")
 ```
 H1 must be discarded
 H2 can be assumed
 H3 must be discarded
+
+#graphic processing
+```{r}
+ggboxplot(MA_data, x = "Condition", y = "INTENTION_SUM", fill = "AGE_GROUP")
+```
+
 
 #Preregistered analysis Self-Determination Theory
 
@@ -511,6 +522,10 @@ Only_BDB_No <- subset(MA_data, BDB_GROUP == "Nein")
 ```{r}
 boxplot(data$INTENTION_1 ~ data$AGE_GROUP)
 table(MA_data$INTEGRATED_REGULATION_1[MA_data$ALTER<=29])
+
+mean(MA_data$INTENTION_SUM[MA_data$AGE_GROUP == "18-29"])
+
+median(MA_data$INTENTION_SUM[MA_data$AGE_GROUP == "30-75"])
 
 boxplot(data$INTENTION_1 ~ MA_data$c_0001)
 
