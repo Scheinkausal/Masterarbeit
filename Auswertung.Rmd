@@ -527,6 +527,8 @@ mean(MA_data$INTENTION_SUM[MA_data$AGE_GROUP == "18-29"])
 
 median(MA_data$INTENTION_SUM[MA_data$AGE_GROUP == "30-75"])
 
+t.test(MA_data$INTENTION_SUM, MA_data$CONDITION[MA_data$CONDITION == 1 | MA_data$CONDITION == 3])
+
 boxplot(data$INTENTION_1 ~ MA_data$c_0001)
 
 table(MA_data$c_0001)
