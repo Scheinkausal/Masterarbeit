@@ -449,9 +449,25 @@ H1 must be discarded
 H2 can be assumed
 H3 must be discarded
 
-#graphic processing
+#graphic processing ANOVA
 ```{r}
-ggboxplot(MA_data, x = "Condition", y = "INTENTION_SUM", fill = "AGE_GROUP")
+Meine_Palette <- c("#00868B", "#00688B")
+#boxplot
+ggboxplot(MA_data, x = "Condition", y = "INTENTION_SUM", fill = "AGE_GROUP", palette = Meine_Palette)
+
+#Interactionplot
+
+interaction.plot(x.factor = MA_data$Condition, #x-axis variable
+                 trace.factor = MA_data$AGE_GROUP, #variable for lines
+                 response = MA_data$INTENTION_SUM, #y-axis variable
+                 fun = median, #metric to plot
+                 ylab = "Intention",
+                 xlab = "Condition",
+                 col = c("#00868B", "#00688B"),
+                 lty = 1, #line type
+                 lwd = 5, #line width
+                 trace.label = "Alters Gruppe")
+
 ```
 
 
@@ -498,6 +514,55 @@ wilcox_effsize(MA_data, INTEGRATED_REGULATION_SUM ~ AGE_GROUP, alternative = "le
 wilcox_effsize(MA_data, INTRINSIC_REGUALTION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
 
 ```
+#graphic processing T-Tests
+
+```{r}
+TPBsubset <- data[,c("ATTsum", "SNsum", "PBCsum","Condition")]
+data_determinants <- reshape2::melt(TPBsubset,id = "Condition")
+data_determinants$Determinants <- factor(data_determinants$variable, levels = c("ATTsum","SNsum","PBCsum"),
+labels = c("Attitudes", "Social norms", "Perceived behavior control")
+)
+
+ggbarplot(
+MA_data,
+x = "AMOTIVATION_SUM",
+y = "value",
+fill = "AGE_GROUP",
+add = c("mean_ci"),
+position = position_dodge(0.8),
+color = "black",
+add.params = list(group = "Condition"),
+legend = "bottom",
+xlab = "",
+ylab = "",
+ylim = c(0,7),
+title = "Determinants of the Theory of Planned Behavior\n seperated by experimental condition",
+subtitle = "Mean and 95% confidence intervals.\n",
+font.x = c(10, "plain", "#111111"),
+font.y = c(10, "plain", "#111111"),
+font.label = c(10, "plain", "#111111"),
+font.legend = c(10, "plain", "#111111"),
+font.tickslab = c(10, "plain", "#111111"),
+font.title = c(12, "bold", "#111111"),
+font.subtitle = c(10, "plain", "#111111"),
+label = TRUE,
+lab.pos = "out",
+lab.col = "#eeeeee",
+lab.size = 3.6,
+lab.vjust = 3.5,
+lab.hjust = 0.5,
+lab.nb.digits = 2,
+orientation = "horiz"
+) + scale_fill_manual(
+name = "",
+labels=c("No One Health input","One Health input"),
+values = c("#9ab5c1","#3B4F69")
+)+ scale_y_continuous(
+expand = c(0, 0),
+breaks=c(1,2,3,4,5,6,7),
+) + coord_cartesian(ylim=c(0,7)) + theme (plot.margin = margin(0, 1, 0, 0, "cm"))
+```
+
 #Correlations
 ```{r}
 cor.test(MA_data$ALTER, MA_data$AMOTIVATION_SUM)
