@@ -220,25 +220,25 @@ labels = c("Individueller Anreiz", "Sozialer Anreiz", "Kontrollgruppe")
 
 
 
-Descriptives
+#Descriptives
 
-Demographics
+##Demographics
 
-The following table shows the distribution of survey participants by demographics and experimental condition (1 = Individual Benefit, 2 = Social Benefit, 3 = Control Group)
+###The following table shows the distribution of survey participants by demographics and experimental condition (1 = Individual Benefit, 2 = Social Benefit, 3 = Control Group)
 
 ```{r}
-MA_data <- apply_labels(MA_data,
-AGE_GROUP = "Age group",
-GENDER_GROUP = "Gender",
-EDUCATION_GROUP = "Level of education",
-COUNTRY_GROUP = "Residence country")
+#MA_data <- apply_labels(MA_data,
+#AGE_GROUP = "Age group",
+#GENDER_GROUP = "Gender",
+#EDUCATION_GROUP = "Level of education",
+#COUNTRY_GROUP = "Residence country")
 
-html_code <- MA_data %>%
-tab_cells(AGE_GROUP,GENDER_GROUP,EDUCATION_GROUP) %>%
-tab_cols(total(label = "Sum"),Condition) %>%
-tab_stat_cases(total_label = "All") %>%
-tab_pivot() %>%
-htmlTable(align = "c",css.cell = c("width: 400px"))
+#html_code <- MA_data %>%
+#tab_cells(AGE_GROUP,GENDER_GROUP,EDUCATION_GROUP) %>%
+#tab_cols(total(label = "Sum"),Condition) %>%
+#tab_stat_cases(total_label = "All") %>%
+#tab_pivot() %>%
+#htmlTable(align = "c",css.cell = c("width: 400px"))
 
 #this code must be adapted according to the personal file path
 
@@ -612,6 +612,14 @@ cor.test(MA_data$ALTER, MA_data$IDENTIFIED_REGUALTION_SUM)
 cor.test(MA_data$ALTER, MA_data$INTEGRATED_REGULATION_SUM)
 cor.test(MA_data$ALTER, MA_data$INTRINSIC_REGUALTION_SUM)
 ```
+```{r}
+cor.test(MA_data$INTENTION_SUM, MA_data$AMOTIVATION_SUM)
+cor.test(MA_data$INTENTION_SUM, MA_data$EXTERNAL_REGULATION_SUM)
+cor.test(MA_data$INTENTION_SUM, MA_data$INTROJECTED_REGULATION_SUM)
+cor.test(MA_data$INTENTION_SUM, MA_data$IDENTIFIED_REGUALTION_SUM)
+cor.test(MA_data$INTENTION_SUM, MA_data$INTEGRATED_REGULATION_SUM)
+cor.test(MA_data$INTENTION_SUM, MA_data$INTRINSIC_REGUALTION_SUM)
+```
 
 #T tests dependent on blood donation behaviour
 
@@ -625,7 +633,7 @@ Only_BDB_No <- subset(MA_data, BDB_GROUP == "Nein")
 
 #Probierstation
 ```{r}
-boxplot(data$INTENTION_1 ~ data$AGE_GROUP)
+#boxplot(data$INTENTION_1 ~ data$AGE_GROUP)
 table(MA_data$INTEGRATED_REGULATION_1[MA_data$ALTER<=29])
 
 mean(MA_data$INTENTION_SUM[MA_data$AGE_GROUP == "18-29"])
