@@ -61,6 +61,7 @@ library(car)
 library(Rmisc)
 library(boot)
 library(rstatix)
+library(hrbrthemes)
 ```
 #load Data
 ```{r}
@@ -279,6 +280,22 @@ round(table(MA_data$BILDUNG)/N*100,2)
 
 describeBy(MA_data$ALTER,MA_data$Condition)
 ```
+#Graphical representation of the age distribution
+```{r}
+p <- MA_data %>%
+  filter( ALTER<75 ) %>%
+  ggplot( aes(x=ALTER)) +  
+    geom_histogram( binwidth=1, fill="#00868B", color="#e9ecef", alpha=0.9) +
+    ggtitle("Altersverteilung") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+p
+
+#table(MA_data$ALTER)
+```
+
 #Determinants Self-Determination Theory
 #Creat Index
 ```{r}
