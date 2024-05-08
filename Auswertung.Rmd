@@ -306,6 +306,12 @@ psych::alpha(subset(MA_data, select = c(AMOTIVATION_1,AMOTIVATION_2,AMOTIVATION_
 
 #Crombachs α : 0.53
 
+psych::alpha(subset(MA_data, select = c(AMOTIVATION_1,AMOTIVATION_2)))
+
+psych::alpha(subset(MA_data, select = c(AMOTIVATION_1,AMOTIVATION_3)))
+
+psych::alpha(subset(MA_data, select = c(AMOTIVATION_2,AMOTIVATION_3)))
+
 #EXTERNAL_REGULATION
 MA_data$EXTERNAL_REGULATION_SUM <- (MA_data$EXTERNAL_REGULATION_1 + MA_data$EXTERNAL_REGULATION_2 + MA_data$EXTERNAL_REGULATION_3) / 3
 
