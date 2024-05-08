@@ -308,9 +308,13 @@ psych::alpha(subset(MA_data, select = c(AMOTIVATION_1,AMOTIVATION_2,AMOTIVATION_
 
 psych::alpha(subset(MA_data, select = c(AMOTIVATION_1,AMOTIVATION_2)))
 
-psych::alpha(subset(MA_data, select = c(AMOTIVATION_1,AMOTIVATION_3)))
+#Crombachs α : 0.64
 
-psych::alpha(subset(MA_data, select = c(AMOTIVATION_2,AMOTIVATION_3)))
+MA_data$AMOTIVATION_SUM_1_2 <- (MA_data$AMOTIVATION_1 + MA_data$AMOTIVATION_2) / 2
+
+#psych::alpha(subset(MA_data, select = c(AMOTIVATION_1,AMOTIVATION_3)))
+
+#psych::alpha(subset(MA_data, select = c(AMOTIVATION_2,AMOTIVATION_3)))
 
 #EXTERNAL_REGULATION
 MA_data$EXTERNAL_REGULATION_SUM <- (MA_data$EXTERNAL_REGULATION_1 + MA_data$EXTERNAL_REGULATION_2 + MA_data$EXTERNAL_REGULATION_3) / 3
@@ -332,6 +336,12 @@ MA_data$IDENTIFIED_REGUALTION_SUM <- (MA_data$IDENTIFIED_REGUALTION_1 + MA_data$
 psych::alpha(subset(MA_data, select = c(IDENTIFIED_REGUALTION_1,IDENTIFIED_REGUALTION_2,IDENTIFIED_REGUALTION_3)))
 
 #Crombachs α : 0.52
+
+MA_data$IDENTIFIED_REGUALTION_SUM_2_3 <- (MA_data$IDENTIFIED_REGUALTION_2 + MA_data$IDENTIFIED_REGUALTION_3) / 2
+
+psych::alpha(subset(MA_data, select = c(IDENTIFIED_REGUALTION_2,IDENTIFIED_REGUALTION_3)))
+
+#Crombachs α : 0.65
 
 #INTEGRATED_REGULATION
 MA_data$INTEGRATED_REGULATION_SUM <- (MA_data$INTEGRATED_REGULATION_1 + MA_data$INTEGRATED_REGULATION_2 + MA_data$INTEGRATED_REGULATION_3) / 3
@@ -509,6 +519,7 @@ describeBy(MA_data$INTEGRATED_REGULATION_SUM, MA_data$AGE_GROUP)
 describeBy(MA_data$INTRINSIC_REGUALTION_SUM, MA_data$AGE_GROUP)
 
 boxplot(MA_data$AMOTIVATION_SUM ~ MA_data$AGE_GROUP)
+boxplot(MA_data$AMOTIVATION_SUM_1_2 ~ MA_data$AGE_GROUP)
 boxplot(MA_data$EXTERNAL_REGULATION_SUM ~ MA_data$AGE_GROUP)
 boxplot(MA_data$INTROJECTED_REGULATION_SUM ~ MA_data$AGE_GROUP)
 boxplot(MA_data$IDENTIFIED_REGUALTION_SUM ~ MA_data$AGE_GROUP)
@@ -517,11 +528,15 @@ boxplot(MA_data$INTRINSIC_REGUALTION_SUM ~ MA_data$AGE_GROUP)
 
 coin::wilcox_test(MA_data$AMOTIVATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
+coin::wilcox_test(MA_data$AMOTIVATION_SUM_1_2 ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
+
 coin::wilcox_test(MA_data$EXTERNAL_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
 coin::wilcox_test(MA_data$INTROJECTED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
 coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+
+coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM_2_3 ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
 coin::wilcox_test(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
@@ -530,9 +545,13 @@ coin::wilcox_test(MA_data$INTRINSIC_REGUALTION_SUM ~ MA_data$AGE_GROUP, data = M
 #Effect Size
 
 wilcox_effsize(MA_data, AMOTIVATION_SUM ~ AGE_GROUP, alternative = "greater", mu = 0)
+wilcox_effsize(MA_data, AMOTIVATION_SUM_1_2 ~ AGE_GROUP, alternative = "greater", mu = 0)
+
 wilcox_effsize(MA_data, EXTERNAL_REGULATION_SUM ~ AGE_GROUP, alternative = "greater", mu = 0)
 wilcox_effsize(MA_data, INTROJECTED_REGULATION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
 wilcox_effsize(MA_data, IDENTIFIED_REGUALTION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
+wilcox_effsize(MA_data, IDENTIFIED_REGUALTION_SUM_2_3 ~ AGE_GROUP, alternative = "less", mu = 0)
+
 wilcox_effsize(MA_data, INTEGRATED_REGULATION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
 wilcox_effsize(MA_data, INTRINSIC_REGUALTION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
 
