@@ -117,6 +117,12 @@ agegroupwave <- c(
   "2" = "30-75"
 )
 
+MA_data$AGE_GROUP_MEDIATION <- 0  # Setze zunächst alle Werte auf 0
+MA_data$AGE_GROUP_MEDIATION[which(MA_data$ALTER >= 18 & MA_data$ALTER <= 29)] <- 1  # Setze die entsprechenden Werte auf 1
+MA_data$AGE_GROUP_MEDIATION[which(MA_data$ALTER >= 30 & MA_data$ALTER <= 75)] <- 2  # Setze die entsprechenden Werte auf 2
+MA_data$AGE_GROUP_MEDIATION <- as.integer(MA_data$AGE_GROUP_MEDIATION)  # Konvertiere die Spalte in Ganzzahlen
+
+
 ```
 
 ##Gender Groups

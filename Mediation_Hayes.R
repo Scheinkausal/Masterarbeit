@@ -5371,4 +5371,5 @@ process<-function(data,y="xxxxx",x="xxxxx",m="xxxxx",w="xxxxx",z="xxxxx",cov="xx
 }  
 process(activate=1)
 
-process(data = MA_data, model=14, x= "ALTER", y="INTENTION_SUM", m="AMOTIVATION_SUM", w="c_0001",seed = 654321)
+#process(data = MA_data, model=14, x= "ALTER", y="INTENTION_SUM", m="AMOTIVATION_SUM", w="c_0001",seed = 654321)
+process(data = MA_data, model=14, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="AMOTIVATION_SUM", w="c_0001",seed = 654321)
