@@ -357,7 +357,7 @@ psych::alpha(subset(MA_data, select = c(INTEGRATED_REGULATION_1,INTEGRATED_REGUL
 #Crombachs α : 0.81
 
 #INTRINSIC_REGUALTION
-MA_data$INTRINSIC_REGUALTION_SUM <- (MA_data$INTRINSIC_REGUALTION_1 + MA_data$INTRINSIC_REGUALTION_2 + MA_data$INTRINSIC_REGUALTION_3) / 3
+MA_data$INTRINSIC_REGULATION_SUM <- (MA_data$INTRINSIC_REGUALTION_1 + MA_data$INTRINSIC_REGUALTION_2 + MA_data$INTRINSIC_REGUALTION_3) / 3
 
 psych::alpha(subset(MA_data, select = c(INTRINSIC_REGUALTION_1,INTRINSIC_REGUALTION_2,INTRINSIC_REGUALTION_3)))
 
@@ -444,10 +444,10 @@ hist(scale(Old$INTEGRATED_REGULATION_SUM))
 
 #INTRINSIC_REGUALTION
 par(mfrow=c(1,2))
-shapiro.test(Young$INTRINSIC_REGUALTION_SUM)
-hist(scale(Young$INTRINSIC_REGUALTION_SUM))
-shapiro.test(Old$INTRINSIC_REGUALTION_SUM)
-hist(scale(Old$INTRINSIC_REGUALTION_SUM))
+shapiro.test(Young$INTRINSIC_REGULATION_SUM)
+hist(scale(Young$INTRINSIC_REGULATION_SUM))
+shapiro.test(Old$INTRINSIC_REGULATION_SUM)
+hist(scale(Old$INTRINSIC_REGULATION_SUM))
 
 #equality of variances 
 LeveneTest(MA_data$AMOTIVATION_SUM, MA_data$Condition)
@@ -455,7 +455,7 @@ LeveneTest(MA_data$EXTERNAL_REGULATION_SUM, MA_data$AGE_GROUP)
 LeveneTest(MA_data$INTROJECTED_REGULATION_SUM, MA_data$AGE_GROUP)
 LeveneTest(MA_data$IDENTIFIED_REGUALTION_SUM, MA_data$AGE_GROUP)
 LeveneTest(MA_data$INTEGRATED_REGULATION_SUM, MA_data$AGE_GROUP)
-LeveneTest(MA_data$INTRINSIC_REGUALTION_SUM, MA_data$AGE_GROUP)
+LeveneTest(MA_data$INTRINSIC_REGULATION_SUM, MA_data$AGE_GROUP)
 
 #equal variance is given
 ```
@@ -522,7 +522,7 @@ describeBy(MA_data$EXTERNAL_REGULATION_SUM, MA_data$AGE_GROUP)
 describeBy(MA_data$INTROJECTED_REGULATION_SUM, MA_data$AGE_GROUP)
 describeBy(MA_data$IDENTIFIED_REGUALTION_SUM, MA_data$AGE_GROUP)
 describeBy(MA_data$INTEGRATED_REGULATION_SUM, MA_data$AGE_GROUP)
-describeBy(MA_data$INTRINSIC_REGUALTION_SUM, MA_data$AGE_GROUP)
+describeBy(MA_data$INTRINSIC_REGULATION_SUM, MA_data$AGE_GROUP)
 
 boxplot(MA_data$AMOTIVATION_SUM ~ MA_data$AGE_GROUP)
 boxplot(MA_data$AMOTIVATION_SUM_1_2 ~ MA_data$AGE_GROUP)
@@ -530,7 +530,7 @@ boxplot(MA_data$EXTERNAL_REGULATION_SUM ~ MA_data$AGE_GROUP)
 boxplot(MA_data$INTROJECTED_REGULATION_SUM ~ MA_data$AGE_GROUP)
 boxplot(MA_data$IDENTIFIED_REGUALTION_SUM ~ MA_data$AGE_GROUP)
 boxplot(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP)
-boxplot(MA_data$INTRINSIC_REGUALTION_SUM ~ MA_data$AGE_GROUP)
+boxplot(MA_data$INTRINSIC_REGULATION_SUM ~ MA_data$AGE_GROUP)
 
 coin::wilcox_test(MA_data$AMOTIVATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
@@ -546,7 +546,7 @@ coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM_2_3 ~ MA_data$AGE_GROUP, dat
 
 coin::wilcox_test(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
-coin::wilcox_test(MA_data$INTRINSIC_REGUALTION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+coin::wilcox_test(MA_data$INTRINSIC_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
 #Effect Size
 
@@ -559,7 +559,7 @@ wilcox_effsize(MA_data, IDENTIFIED_REGUALTION_SUM ~ AGE_GROUP, alternative = "le
 wilcox_effsize(MA_data, IDENTIFIED_REGUALTION_SUM_2_3 ~ AGE_GROUP, alternative = "less", mu = 0)
 
 wilcox_effsize(MA_data, INTEGRATED_REGULATION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
-wilcox_effsize(MA_data, INTRINSIC_REGUALTION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
+wilcox_effsize(MA_data, INTRINSIC_REGULATION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
 
 ```
 #graphic processing T-Tests
@@ -572,21 +572,21 @@ label(MA_data_tabele_SDT$EXTERNAL_REGULATION_SUM)       <- "Externe Regulation"
 label(MA_data_tabele_SDT$INTROJECTED_REGULATION_SUM)     <- "Introjizierte Regulation"
 label(MA_data_tabele_SDT$IDENTIFIED_REGUALTION_SUM) <- "Identifizierte Regulation"
 label(MA_data_tabele_SDT$INTEGRATED_REGULATION_SUM) <- "Integrierte Regulation"
-label(MA_data_tabele_SDT$INTRINSIC_REGUALTION_SUM) <- "Intrinsische Motivation"
+label(MA_data_tabele_SDT$INTRINSIC_REGULATION_SUM) <- "Intrinsische Motivation"
 
 
 caption  <- "Deskriptive Daten"
 #footnote <- "ᵃ Also known as Breslow thickness"
 
-table1(~ AMOTIVATION_SUM + EXTERNAL_REGULATION_SUM + INTROJECTED_REGULATION_SUM + IDENTIFIED_REGUALTION_SUM + INTEGRATED_REGULATION_SUM + INTRINSIC_REGUALTION_SUM | AGE_GROUP, data=MA_data_tabele_SDT, overall=c(left="Total"), caption=caption) #footnote=footnote)
+table1(~ AMOTIVATION_SUM + EXTERNAL_REGULATION_SUM + INTROJECTED_REGULATION_SUM + IDENTIFIED_REGUALTION_SUM + INTEGRATED_REGULATION_SUM + INTRINSIC_REGULATION_SUM | AGE_GROUP, data=MA_data_tabele_SDT, overall=c(left="Total"), caption=caption) #footnote=footnote)
 ```
 
 ```{r}
-SDTsubset <- MA_data[,c("AMOTIVATION_SUM", "EXTERNAL_REGULATION_SUM", "INTROJECTED_REGULATION_SUM","IDENTIFIED_REGUALTION_SUM", "INTEGRATED_REGULATION_SUM", "INTRINSIC_REGUALTION_SUM", "AGE_GROUP")]
+SDTsubset <- MA_data[,c("AMOTIVATION_SUM", "EXTERNAL_REGULATION_SUM", "INTROJECTED_REGULATION_SUM","IDENTIFIED_REGUALTION_SUM", "INTEGRATED_REGULATION_SUM", "INTRINSIC_REGULATION_SUM", "AGE_GROUP")]
 
 data_determinants <- reshape2::melt(SDTsubset,id = "AGE_GROUP")
 
-data_determinants$Determinants <- factor(data_determinants$variable, levels = c("AMOTIVATION_SUM", "EXTERNAL_REGULATION_SUM", "INTROJECTED_REGULATION_SUM","IDENTIFIED_REGUALTION_SUM", "INTEGRATED_REGULATION_SUM", "INTRINSIC_REGUALTION_SUM"),
+data_determinants$Determinants <- factor(data_determinants$variable, levels = c("AMOTIVATION_SUM", "EXTERNAL_REGULATION_SUM", "INTROJECTED_REGULATION_SUM","IDENTIFIED_REGUALTION_SUM", "INTEGRATED_REGULATION_SUM", "INTRINSIC_REGULATION_SUM"),
 labels = c("Amotivation", "Externe Regulation", "Introjizierte Regulation", "Identifizierte Regulation", "Integrierte Regulation", "Intrinsische Motivation")
 )
 
@@ -633,6 +633,13 @@ breaks=c(1,2,3,4,5,6,7),
 ) + coord_cartesian(ylim=c(0,7)) + theme (plot.margin = margin(0, 1, 0, 0, "cm"))
 
 ```
+#Mediation
+```{r}
+process(data = MA_data, model=14, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="AMOTIVATION_SUM", w="c_0001",seed = 654321)
+
+process(data = MA_data, model=14, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="INTRINSIC_REGULATION_SUM", w="c_0001",seed = 654321)
+
+```
 
 #Correlations
 ```{r}
@@ -641,7 +648,7 @@ cor.test(MA_data$ALTER, MA_data$EXTERNAL_REGULATION_SUM)
 cor.test(MA_data$ALTER, MA_data$INTROJECTED_REGULATION_SUM)
 cor.test(MA_data$ALTER, MA_data$IDENTIFIED_REGUALTION_SUM)
 cor.test(MA_data$ALTER, MA_data$INTEGRATED_REGULATION_SUM)
-cor.test(MA_data$ALTER, MA_data$INTRINSIC_REGUALTION_SUM)
+cor.test(MA_data$ALTER, MA_data$INTRINSIC_REGULATION_SUM)
 ```
 ```{r}
 cor.test(MA_data$INTENTION_SUM, MA_data$AMOTIVATION_SUM)
@@ -649,7 +656,7 @@ cor.test(MA_data$INTENTION_SUM, MA_data$EXTERNAL_REGULATION_SUM)
 cor.test(MA_data$INTENTION_SUM, MA_data$INTROJECTED_REGULATION_SUM)
 cor.test(MA_data$INTENTION_SUM, MA_data$IDENTIFIED_REGUALTION_SUM)
 cor.test(MA_data$INTENTION_SUM, MA_data$INTEGRATED_REGULATION_SUM)
-cor.test(MA_data$INTENTION_SUM, MA_data$INTRINSIC_REGUALTION_SUM)
+cor.test(MA_data$INTENTION_SUM, MA_data$INTRINSIC_REGULATION_SUM)
 ```
 
 #T tests dependent on blood donation behaviour
@@ -706,11 +713,11 @@ describe(Only_BDB_No)
 
 #Probierstation für BDB YES
 ```{r}
-SDTsubset_BDB_YES <- Only_BDB_Yes[,c("AMOTIVATION_SUM", "EXTERNAL_REGULATION_SUM", "INTROJECTED_REGULATION_SUM","IDENTIFIED_REGUALTION_SUM", "INTEGRATED_REGULATION_SUM", "INTRINSIC_REGUALTION_SUM", "AGE_GROUP")]
+SDTsubset_BDB_YES <- Only_BDB_Yes[,c("AMOTIVATION_SUM", "EXTERNAL_REGULATION_SUM", "INTROJECTED_REGULATION_SUM","IDENTIFIED_REGUALTION_SUM", "INTEGRATED_REGULATION_SUM", "INTRINSIC_REGULATION_SUM", "AGE_GROUP")]
 
 data_determinants_BDB_YES <- reshape2::melt(SDTsubset_BDB_YES,id = "AGE_GROUP")
 
-data_determinants_BDB_YES$Determinants <- factor(data_determinants_BDB_YES$variable, levels = c("AMOTIVATION_SUM", "EXTERNAL_REGULATION_SUM", "INTROJECTED_REGULATION_SUM","IDENTIFIED_REGUALTION_SUM", "INTEGRATED_REGULATION_SUM", "INTRINSIC_REGUALTION_SUM"),
+data_determinants_BDB_YES$Determinants <- factor(data_determinants_BDB_YES$variable, levels = c("AMOTIVATION_SUM", "EXTERNAL_REGULATION_SUM", "INTROJECTED_REGULATION_SUM","IDENTIFIED_REGUALTION_SUM", "INTEGRATED_REGULATION_SUM", "INTRINSIC_REGULATION_SUM"),
 labels = c("Amotivation", "Externe Regulation", "Introjizierte Regulation", "Identifizierte Regulation", "Integrierte Regulation", "Intrinsische Motivation")
 )
 
