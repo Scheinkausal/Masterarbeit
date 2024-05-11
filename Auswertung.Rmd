@@ -633,7 +633,9 @@ breaks=c(1,2,3,4,5,6,7),
 ) + coord_cartesian(ylim=c(0,7)) + theme (plot.margin = margin(0, 1, 0, 0, "cm"))
 
 ```
-#Mediation
+#Explorativ
+
+##Mediation
 ```{r}
 process(data = MA_data, model=14, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="AMOTIVATION_SUM", w="c_0001",seed = 654321)
 
