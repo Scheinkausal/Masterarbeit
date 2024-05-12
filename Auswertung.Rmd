@@ -480,6 +480,9 @@ summary(ANOVA_BENEFIT, robust = TRUE)
 
 Anova(ANOVA_BENEFIT, type=3)
 
+#Post Hoc Test
+ScheffeTest(ANOVA_BENEFIT)
+
 #boxplot(INTENTION_SUM ~ AGE_GROUP, col = c("blue", "green"), data=MA_data)
 
 #ggboxplot(MA_data, x= "INTENTION_SUM", y = "AGE_GROUP", color = "green")
@@ -532,21 +535,21 @@ boxplot(MA_data$IDENTIFIED_REGUALTION_SUM ~ MA_data$AGE_GROUP)
 boxplot(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP)
 boxplot(MA_data$INTRINSIC_REGULATION_SUM ~ MA_data$AGE_GROUP)
 
-coin::wilcox_test(MA_data$AMOTIVATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
+coin::wilcox_test(MA_data$AMOTIVATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
 
-coin::wilcox_test(MA_data$AMOTIVATION_SUM_1_2 ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
+coin::wilcox_test(MA_data$AMOTIVATION_SUM_1_2 ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
 
-coin::wilcox_test(MA_data$EXTERNAL_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
+coin::wilcox_test(MA_data$EXTERNAL_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
 
-coin::wilcox_test(MA_data$INTROJECTED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+coin::wilcox_test(MA_data$INTROJECTED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
 
-coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
 
 coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM_2_3 ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
-coin::wilcox_test(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+coin::wilcox_test(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
 
-coin::wilcox_test(MA_data$INTRINSIC_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+coin::wilcox_test(MA_data$INTRINSIC_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
 
 #Effect Size
 
