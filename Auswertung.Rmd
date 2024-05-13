@@ -280,11 +280,14 @@ ageRange_max <- max(MA_data$ALTER)
 ageMean <- mean(MA_data$ALTER)
 ageSD <- sd(MA_data$ALTER)
 ageMedian <- median(MA_data$ALTER)
+table(MA_data$ALTER)
 
 round(table(MA_data$GESCHLECHT)/N*100,2)
 round(table(MA_data$BILDUNG)/N*100,2)
 
 describeBy(MA_data$ALTER,MA_data$Condition)
+
+table1(~ ageRange_max + ageRange_min + ageMean + ageSD + ageMedian, data=MA_data_tabele, caption=caption)
 ```
 #Graphical representation of the age distribution
 ```{r}
@@ -295,8 +298,14 @@ p <- MA_data %>%
     ggtitle("Altersverteilung") +
     theme_ipsum() +
     theme(
-      plot.title = element_text(size=15)
-    )
+      plot.title = element_text(size=15),
+      axis.title.x = element_text(hjust = 0.5, vjust = -0.5),
+      axis.title.y = element_text(hjust = 0.5, vjust = -0.5)
+    ) +
+  labs(
+    x = "Alter",   
+    y = "Häufigkeit"  
+  )
 p
 
 #table(MA_data$ALTER)
