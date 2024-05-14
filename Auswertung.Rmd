@@ -490,7 +490,9 @@ summary(ANOVA_BENEFIT, robust = TRUE)
 Anova(ANOVA_BENEFIT, type=3)
 
 #Post Hoc Test
-ScheffeTest(ANOVA_BENEFIT)
+TukeyHSD(ANOVA_BENEFIT)
+
+apa.aov.table(nv, filename = "ANOVA_APA.doc")
 
 #boxplot(INTENTION_SUM ~ AGE_GROUP, col = c("blue", "green"), data=MA_data)
 
