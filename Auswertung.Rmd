@@ -514,12 +514,12 @@ interaction.plot(x.factor = MA_data$Condition, #x-axis variable
                  trace.factor = MA_data$AGE_GROUP, #variable for lines
                  response = MA_data$INTENTION_SUM, #y-axis variable
                  fun = median, #metric to plot
-                 ylab = "Intention",
-                 xlab = "Condition",
+                 ylab = "Blutspendeintention",
+                 xlab = "Kontroll -und Experimentalgruppen",
                  col = c("#00868B", "#00688B"),
                  lty = 1, #line type
                  lwd = 5, #line width
-                 trace.label = "Alters Gruppe")
+                 trace.label = "Altersgruppe")
 
 ```
 
