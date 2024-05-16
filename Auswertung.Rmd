@@ -490,7 +490,14 @@ summary(ANOVA_BENEFIT, robust = TRUE)
 Anova(ANOVA_BENEFIT, type=3)
 
 #Post Hoc Test
-TukeyHSD(ANOVA_BENEFIT)
+TukeyHSD(ANOVA_BENEFIT, conf.level = .95)
+
+library(multcompView)
+
+TUKEY <- TukeyHSD(ANOVA_BENEFIT, conf.level = .95)
+ 
+# Tuckey test representation :
+plot(TUKEY , las=1 , col="brown", cex = 0.8)
 
 apa.aov.table(nv, filename = "ANOVA_APA.doc")
 
@@ -498,6 +505,7 @@ apa.aov.table(nv, filename = "ANOVA_APA.doc")
 
 #ggboxplot(MA_data, x= "INTENTION_SUM", y = "AGE_GROUP", color = "green")
 ```
+
 H1 must be discarded
 H2 can be assumed
 H3 must be discarded
@@ -522,6 +530,16 @@ interaction.plot(x.factor = MA_data$Condition, #x-axis variable
                  trace.label = "Altersgruppe")
 
 ```
+#Additional t tests for the interaction effect
+```{r}
+
+Young$Exp_Group_Young <- ifelse(Young$Condition %in% 
+                                  c(1, 2), Young$Condition, NA)
+
+wilcox_test(INTENTION_SUM ~ Exp_Group_Young, data = Young, alternative = "greater", p.adjust.method = "bonferroni")
+
+```
+
 
 
 #Preregistered analysis Self-Determination Theory
@@ -548,15 +566,11 @@ boxplot(MA_data$INTRINSIC_REGULATION_SUM ~ MA_data$AGE_GROUP)
 
 coin::wilcox_test(MA_data$AMOTIVATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
 
-coin::wilcox_test(MA_data$AMOTIVATION_SUM_1_2 ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
-
 coin::wilcox_test(MA_data$EXTERNAL_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
 
 coin::wilcox_test(MA_data$INTROJECTED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
 
 coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
-
-coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM_2_3 ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
 coin::wilcox_test(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
 
@@ -648,6 +662,14 @@ breaks=c(1,2,3,4,5,6,7),
 
 ```
 #Explorativ
+
+##Crombachs alpha
+```{r}
+coin::wilcox_test(MA_data$AMOTIVATION_SUM_1_2 ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
+
+coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM_2_3 ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+```
+
 
 ##Mediation
 ```{r}
