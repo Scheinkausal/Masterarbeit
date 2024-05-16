@@ -62,6 +62,7 @@ library(Rmisc)
 library(boot)
 library(rstatix)
 library(hrbrthemes)
+library(multcompView)
 ```
 #load Data
 ```{r}
@@ -492,14 +493,14 @@ Anova(ANOVA_BENEFIT, type=3)
 #Post Hoc Test
 TukeyHSD(ANOVA_BENEFIT, conf.level = .95)
 
-library(multcompView)
-
 TUKEY <- TukeyHSD(ANOVA_BENEFIT, conf.level = .95)
  
 # Tuckey test representation :
-plot(TUKEY , las=1 , col="brown", cex = 0.8)
+par(mar = c(5, 5, 4, 2) + 2.0)
+plot(TUKEY , las=1, col="#00688B")
 
 apa.aov.table(nv, filename = "ANOVA_APA.doc")
+
 
 #boxplot(INTENTION_SUM ~ AGE_GROUP, col = c("blue", "green"), data=MA_data)
 
@@ -579,12 +580,11 @@ coin::wilcox_test(MA_data$INTRINSIC_REGULATION_SUM ~ MA_data$AGE_GROUP, data = M
 #Effect Size
 
 wilcox_effsize(MA_data, AMOTIVATION_SUM ~ AGE_GROUP, alternative = "greater", mu = 0)
-wilcox_effsize(MA_data, AMOTIVATION_SUM_1_2 ~ AGE_GROUP, alternative = "greater", mu = 0)
+
 
 wilcox_effsize(MA_data, EXTERNAL_REGULATION_SUM ~ AGE_GROUP, alternative = "greater", mu = 0)
 wilcox_effsize(MA_data, INTROJECTED_REGULATION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
 wilcox_effsize(MA_data, IDENTIFIED_REGUALTION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
-wilcox_effsize(MA_data, IDENTIFIED_REGUALTION_SUM_2_3 ~ AGE_GROUP, alternative = "less", mu = 0)
 
 wilcox_effsize(MA_data, INTEGRATED_REGULATION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
 wilcox_effsize(MA_data, INTRINSIC_REGULATION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
@@ -667,7 +667,11 @@ breaks=c(1,2,3,4,5,6,7),
 ```{r}
 coin::wilcox_test(MA_data$AMOTIVATION_SUM_1_2 ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
 
+wilcox_effsize(MA_data, AMOTIVATION_SUM_1_2 ~ AGE_GROUP, alternative = "greater", mu = 0)
+
 coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM_2_3 ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
+
+wilcox_effsize(MA_data, IDENTIFIED_REGUALTION_SUM_2_3 ~ AGE_GROUP, alternative = "less", mu = 0)
 ```
 
 
