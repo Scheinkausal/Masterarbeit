@@ -671,8 +671,64 @@ wilcox_effsize(MA_data, AMOTIVATION_SUM_1_2 ~ AGE_GROUP, alternative = "greater"
 
 coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM_2_3 ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
+#t.test(MA_data$IDENTIFIED_REGUALTION_SUM_2_3 ~ MA_data$AGE_GROUP)
+
 wilcox_effsize(MA_data, IDENTIFIED_REGUALTION_SUM_2_3 ~ AGE_GROUP, alternative = "less", mu = 0)
 ```
+#Grafik
+
+```{r}
+SDTsubset_exp <- MA_data[,c("AMOTIVATION_SUM", "AMOTIVATION_SUM_1_2", "IDENTIFIED_REGUALTION_SUM", "IDENTIFIED_REGUALTION_SUM_2_3", "AGE_GROUP")]
+
+data_determinants_exp <- reshape2::melt(SDTsubset_exp,id = "AGE_GROUP")
+
+data_determinants_exp$Determinants <- factor(data_determinants_exp$variable, levels = c("AMOTIVATION_SUM", "AMOTIVATION_SUM_1_2", "IDENTIFIED_REGUALTION_SUM", "IDENTIFIED_REGUALTION_SUM_2_3"),
+labels = c("Amotivation", "Explorative Amotivation", "Identifizierte Regulation", "Explorative Identifizierte Regulation")
+)
+
+data_determinants_exp$Determinants <- str_wrap(data_determinants_exp$Determinants, width = 10)
+
+ggbarplot(
+data_determinants_exp,
+x = "Determinants",
+y = "value",
+fill = "AGE_GROUP",
+add = c("mean_ci"),
+position = position_dodge(0.8),
+color = "black",
+add.params = list(group = "AGE_GROUP"),
+legend = "bottom",
+xlab = "",
+ylab = "",
+ylim = c(0,7),
+title = "Motivationsarten der Self-Determination Theory",
+subtitle = "Mean and 95% confidence intervals.\n",
+font.x = c(10, "plain", "#111111"),
+font.y = c(10, "plain", "#111111"),
+font.label = c(10, "plain", "#111111"),
+font.legend = c(10, "plain", "#111111"),
+font.tickslab = c(10, "plain", "#111111"),
+font.title = c(12, "bold", "#111111"),
+font.subtitle = c(10, "plain", "#111111"),
+label = TRUE,
+lab.pos = "out",
+lab.col = "#eeeeee",
+lab.size = 3.6,
+lab.vjust = 3.5,
+lab.hjust = 0.5,
+lab.nb.digits = 2,
+orientation = "horiz",
+) + scale_fill_manual(
+name = "",
+labels=c("18-29 Jahre","30-75 Jahre"),
+values = c("#00868B","#00688B")
+)+ scale_y_continuous(
+expand = c(0, 0),
+breaks=c(1,2,3,4,5,6,7),
+) + coord_cartesian(ylim=c(0,7)) + theme (plot.margin = margin(0, 1, 0, 0, "cm"))
+```
+```
+
 
 
 ##Mediation
@@ -680,6 +736,10 @@ wilcox_effsize(MA_data, IDENTIFIED_REGUALTION_SUM_2_3 ~ AGE_GROUP, alternative =
 process(data = MA_data, model=14, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="AMOTIVATION_SUM", w="c_0001",seed = 654321)
 
 process(data = MA_data, model=14, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="INTRINSIC_REGULATION_SUM", w="c_0001",seed = 654321)
+
+process(data = MA_data, model=15, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="AMOTIVATION_SUM", w="c_0001",seed = 654321)
+
+process(data = MA_data, model=15, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="INTRINSIC_REGULATION_SUM", w="c_0001",seed = 654321)
 
 ```
 
