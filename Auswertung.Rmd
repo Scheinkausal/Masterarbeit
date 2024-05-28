@@ -499,7 +499,7 @@ TUKEY <- TukeyHSD(ANOVA_BENEFIT, conf.level = .95)
 par(mar = c(5, 5, 4, 2) + 2.0)
 plot(TUKEY , las=1, col="#00688B")
 
-apa.aov.table(nv, filename = "ANOVA_APA.doc")
+apa.aov.table(ANOVA_BENEFIT, filename = "ANOVA_APA.doc_2")
 
 
 #boxplot(INTENTION_SUM ~ AGE_GROUP, col = c("blue", "green"), data=MA_data)
