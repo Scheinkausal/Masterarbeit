@@ -320,11 +320,11 @@ MA_data$AMOTIVATION_SUM <- (MA_data$AMOTIVATION_1 + MA_data$AMOTIVATION_2 + MA_d
 
 psych::alpha(subset(MA_data, select = c(AMOTIVATION_1,AMOTIVATION_2,AMOTIVATION_3)))
 
-#Crombachs α : 0.53
+#Crombachs α : .53
 
 psych::alpha(subset(MA_data, select = c(AMOTIVATION_1,AMOTIVATION_2)))
 
-#Crombachs α : 0.64
+#Crombachs α : .64
 
 MA_data$AMOTIVATION_SUM_1_2 <- (MA_data$AMOTIVATION_1 + MA_data$AMOTIVATION_2) / 2
 
@@ -337,41 +337,41 @@ MA_data$EXTERNAL_REGULATION_SUM <- (MA_data$EXTERNAL_REGULATION_1 + MA_data$EXTE
 
 psych::alpha(subset(MA_data, select = c(EXTERNAL_REGULATION_1,EXTERNAL_REGULATION_2,EXTERNAL_REGULATION_2)))
 
-#Crombachs α : 0.85
+#Crombachs α : .85
 
 #INTROJECTED_REGULATION
 MA_data$INTROJECTED_REGULATION_SUM <- (MA_data$INTROJECTED_REGULATION_1 + MA_data$INTROJECTED_REGULATION_2 + MA_data$INTROJECTED_REGULATION_3) / 3
 
 psych::alpha(subset(MA_data, select = c(INTROJECTED_REGULATION_1,INTROJECTED_REGULATION_2,INTROJECTED_REGULATION_3)))
 
-#Crombachs α : 0.80
+#Crombachs α : .80
 
 #IDENTIFIED_REGUALTION
 MA_data$IDENTIFIED_REGUALTION_SUM <- (MA_data$IDENTIFIED_REGUALTION_1 + MA_data$IDENTIFIED_REGUALTION_2 + MA_data$IDENTIFIED_REGUALTION_3) / 3
 
 psych::alpha(subset(MA_data, select = c(IDENTIFIED_REGUALTION_1,IDENTIFIED_REGUALTION_2,IDENTIFIED_REGUALTION_3)))
 
-#Crombachs α : 0.52
+#Crombachs α : .52
 
 MA_data$IDENTIFIED_REGUALTION_SUM_2_3 <- (MA_data$IDENTIFIED_REGUALTION_2 + MA_data$IDENTIFIED_REGUALTION_3) / 2
 
 psych::alpha(subset(MA_data, select = c(IDENTIFIED_REGUALTION_2,IDENTIFIED_REGUALTION_3)))
 
-#Crombachs α : 0.65
+#Crombachs α : .65
 
 #INTEGRATED_REGULATION
 MA_data$INTEGRATED_REGULATION_SUM <- (MA_data$INTEGRATED_REGULATION_1 + MA_data$INTEGRATED_REGULATION_2 + MA_data$INTEGRATED_REGULATION_3) / 3
 
 psych::alpha(subset(MA_data, select = c(INTEGRATED_REGULATION_1,INTEGRATED_REGULATION_2,INTEGRATED_REGULATION_3)))
 
-#Crombachs α : 0.81
+#Crombachs α : .81
 
 #INTRINSIC_REGUALTION
 MA_data$INTRINSIC_REGULATION_SUM <- (MA_data$INTRINSIC_REGUALTION_1 + MA_data$INTRINSIC_REGUALTION_2 + MA_data$INTRINSIC_REGUALTION_3) / 3
 
 psych::alpha(subset(MA_data, select = c(INTRINSIC_REGUALTION_1,INTRINSIC_REGUALTION_2,INTRINSIC_REGUALTION_3)))
 
-#Crombachs α : 0.77
+#Crombachs α : .77
 ```
 
 #Creat Index Intention
@@ -385,6 +385,43 @@ psych::alpha(subset(MA_data, select = c(INTENTION_1,INTENTION_2,INTENTION_3)))
 #Analysis of the preconditions 
 
 #Test for the prerequisite of a two-factorial ANOVA
+
+##Identify and select outliers
+```{r}
+library(dplyr)
+
+
+identify_outliers <- function(data) {
+  Q1 <- quantile(data$INTENTION_SUM, 0.25)
+  Q3 <- quantile(data$INTENTION_SUM, 0.75)
+  IQR <- Q3 - Q1
+  
+  lower_bound <- Q1 - 1.5 * IQR
+  upper_bound <- Q3 + 1.5 * IQR
+  
+  outliers <- data %>%
+    filter(INTENTION_SUM < lower_bound | INTENTION_SUM > upper_bound)
+  
+  return(outliers)
+}
+
+
+outliers <- identify_outliers(MA_data)
+
+
+print(outliers)
+
+
+MA_data_no_outliers <- MA_data %>%
+  filter(!(INTENTION_SUM %in% outliers$INTENTION_SUM))
+
+
+summary(MA_data_no_outliers)
+
+#No observations in the ‘Outliners’ data set. Accordingly, there are no outliers
+
+```
+
 ```{r}
 #Requirement 1: Metric scaling of the AV : Yes
 
@@ -489,6 +526,9 @@ H3 Interaction Hypothesis(Interaction):In contrast to the social incentive, the 
 summary(ANOVA_BENEFIT, robust = TRUE)
 
 Anova(ANOVA_BENEFIT, type=3)
+
+#Cook Distanz test
+plot(ANOVA_BENEFIT, 4)
 
 #Post Hoc Test
 TukeyHSD(ANOVA_BENEFIT, conf.level = .95)
