@@ -419,34 +419,51 @@ MA_data_no_outliers <- MA_data %>%
 summary(MA_data_no_outliers)
 
 #No observations in the ‘Outliners’ data set. Accordingly, there are no outliers
-
 ```
 
 ```{r}
+ANOVA_BENEFIT <- aov(INTENTION_SUM ~ Condition + AGE_GROUP + Condition*AGE_GROUP, data = MA_data)
+
+#Cook Distanz test
+plot(ANOVA_BENEFIT, 4)
+cd <- cooks.distance(ANOVA_BENEFIT)
+#view(cd<4/396)
+
+indices_to_remove <- c(1, 22, 85, 113, 175, 192, 216, 231, 267, 268, 273, 309, 328, 330, 337, 399, 400, 401, 403)
+
+MA_data_no_outliers <- MA_data_no_outliers[-indices_to_remove, ]
+
+ANOVA_BENEFIT_NO_OUTLIERS <- aov(INTENTION_SUM ~ Condition + AGE_GROUP + Condition*AGE_GROUP, data = MA_data_no_outliers)
 #Requirement 1: Metric scaling of the AV : Yes
 
 #Requirement 2: Homogeneity of variances
 
 leveneTest(INTENTION_SUM ~ Condition*AGE_GROUP, data = MA_data)
 
+leveneTest(INTENTION_SUM ~ Condition*AGE_GROUP, data = MA_data_no_outliers)
+
 #The variances are not equal, as p < 0.05. Violation of the homogeneity assumption.
 
 ```
 #ANOVA Testen
 ```{r}
-ANOVA_BENEFIT <- aov(INTENTION_SUM ~ Condition + AGE_GROUP + Condition*AGE_GROUP, data = MA_data)
+
 
 nv <- lm(INTENTION_SUM ~ Condition*AGE_GROUP, data = MA_data)
 
+nvno <- lm(INTENTION_SUM ~ Condition*AGE_GROUP, data = MA_data_no_outliers)
 
 ANOVA_BENEFIT_ONE_WAY <- oneway.test(INTENTION_SUM ~ Condition + AGE_GROUP + Condition*AGE_GROUP, data = MA_data, var.equal = FALSE)
 print(ANOVA_BENEFIT_ONE_WAY)
 
 ggqqplot(residuals(nv))
+ggqqplot(residuals(nvno))
 #plot(ANOVA_BENEFIT, 2)
 
-
 #Requirement 3: Assumption of a normal distribution can only be partially accepted
+
+
+
 ```
 #Prerequisite for a t-test with independent samples
 ```{r}
@@ -527,8 +544,8 @@ summary(ANOVA_BENEFIT, robust = TRUE)
 
 Anova(ANOVA_BENEFIT, type=3)
 
-#Cook Distanz test
-plot(ANOVA_BENEFIT, 4)
+#ANOVA with Cook Distance Test
+Anova(ANOVA_BENEFIT_NO_OUTLIERS, type=3)
 
 #Post Hoc Test
 TukeyHSD(ANOVA_BENEFIT, conf.level = .95)
@@ -539,7 +556,18 @@ TUKEY <- TukeyHSD(ANOVA_BENEFIT, conf.level = .95)
 par(mar = c(5, 5, 4, 2) + 2.0)
 plot(TUKEY , las=1, col="#00688B")
 
-apa.aov.table(ANOVA_BENEFIT, filename = "ANOVA_APA.doc_2")
+#No Outliers
+TukeyHSD(ANOVA_BENEFIT_NO_OUTLIERS, conf.level = .95)
+
+TUKEY_no_outliers <- TukeyHSD(ANOVA_BENEFIT_NO_OUTLIERS, conf.level = .95)
+
+par(mar = c(5, 5, 4, 2) + 2.0)
+plot(TUKEY_no_outliers , las=1, col="#00688B")
+
+#Table ANOVA
+apa.aov.table(ANOVA_BENEFIT, filename = "ANOVA_APA_2.doc")
+
+apa.aov.table(ANOVA_BENEFIT_NO_OUTLIERS, filename = "ANOVA_APA_3.doc")
 
 
 #boxplot(INTENTION_SUM ~ AGE_GROUP, col = c("blue", "green"), data=MA_data)
@@ -557,11 +585,27 @@ Meine_Palette <- c("#00868B", "#00688B")
 #boxplot
 ggboxplot(MA_data, x = "Condition", y = "INTENTION_SUM", fill = "AGE_GROUP", palette = Meine_Palette)
 
+#boxblot with no outliers
+ggboxplot(MA_data_no_outliers, x = "Condition", y = "INTENTION_SUM", fill = "AGE_GROUP", palette = Meine_Palette)
+
 #Interactionplot
 
 interaction.plot(x.factor = MA_data$Condition, #x-axis variable
                  trace.factor = MA_data$AGE_GROUP, #variable for lines
                  response = MA_data$INTENTION_SUM, #y-axis variable
+                 fun = median, #metric to plot
+                 ylab = "Blutspendeintention",
+                 xlab = "Kontroll -und Experimentalgruppen",
+                 col = c("#00868B", "#00688B"),
+                 lty = 1, #line type
+                 lwd = 5, #line width
+                 trace.label = "Altersgruppe")
+
+#no outliers
+
+interaction.plot(x.factor = MA_data_no_outliers$Condition, #x-axis variable
+                 trace.factor = MA_data_no_outliers$AGE_GROUP, #variable for lines
+                 response = MA_data_no_outliers$INTENTION_SUM, #y-axis variable
                  fun = median, #metric to plot
                  ylab = "Blutspendeintention",
                  xlab = "Kontroll -und Experimentalgruppen",
