@@ -567,7 +567,7 @@ plot(TUKEY_no_outliers , las=1, col="#00688B")
 #Table ANOVA
 apa.aov.table(ANOVA_BENEFIT, filename = "ANOVA_APA_2.doc")
 
-apa.aov.table(ANOVA_BENEFIT_NO_OUTLIERS, filename = "ANOVA_APA_3.doc")
+#apa.aov.table(ANOVA_BENEFIT_NO_OUTLIERS, filename = "ANOVA_APA_3.doc")
 
 
 #boxplot(INTENTION_SUM ~ AGE_GROUP, col = c("blue", "green"), data=MA_data)
@@ -821,11 +821,15 @@ process(data = MA_data, model=14, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m
 
 process(data = MA_data, model=14, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="EXTERNAL_REGULATION_SUM", w="c_0001",seed = 654321)
 
+process(data = MA_data, model=14, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="INTEGRATED_REGULATION_SUM", w="c_0001",seed = 654321)
+
 process(data = MA_data, model=14, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="INTRINSIC_REGULATION_SUM", w="c_0001",seed = 654321)
 
 process(data = MA_data, model=15, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="AMOTIVATION_SUM", w="c_0001",seed = 654321)
 
 process(data = MA_data, model=15, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="EXTERNAL_REGULATION_SUM", w="c_0001",seed = 654321)
+
+process(data = MA_data, model=15, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="INTEGRATED_REGULATION_SUM", w="c_0001",seed = 654321)
 
 process(data = MA_data, model=15, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="INTRINSIC_REGULATION_SUM", w="c_0001",seed = 654321)
 
