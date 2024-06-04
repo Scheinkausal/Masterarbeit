@@ -270,7 +270,10 @@ units(MA_data_tabele$ALTER)       <- "Jahre"
 caption  <- "Deskriptive Daten"
 #footnote <- "ᵃ Also known as Breslow thickness"
 
-table1(~ GENDER_GROUP + ALTER + EDUCATION_GROUP + COUNTRY_GROUP + BDB_GROUP + BDO_GROUP | Condition, data=MA_data_tabele, overall=c(left="Total"), caption=caption) #footnote=footnote)
+table1(~ GENDER_GROUP + ALTER + EDUCATION_GROUP + COUNTRY_GROUP + BDB_GROUP + BDO_GROUP | Condition, data=MA_data_tabele, overall=c(left="Total"), caption=caption)
+
+table1(~ GENDER_GROUP + ALTER + EDUCATION_GROUP + COUNTRY_GROUP + BDB_GROUP + BDO_GROUP | AGE_GROUP, data=MA_data_tabele, overall=c(left="Total"), caption=caption)
+#footnote=footnote)
 ```
 
 #Overall percentages for gender and education are shown such as descriptive data for age by condition.
