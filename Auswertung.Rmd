@@ -272,7 +272,7 @@ caption  <- "Deskriptive Daten"
 
 table1(~ GENDER_GROUP + ALTER + EDUCATION_GROUP + COUNTRY_GROUP + BDB_GROUP + BDO_GROUP | Condition, data=MA_data_tabele, overall=c(left="Total"), caption=caption)
 
-table1(~ GENDER_GROUP + ALTER + EDUCATION_GROUP + COUNTRY_GROUP + BDB_GROUP + BDO_GROUP | AGE_GROUP, data=MA_data_tabele, overall=c(left="Total"), caption=caption)
+table1(~ GENDER_GROUP + ALTER + EDUCATION_GROUP + BDB_GROUP + BDO_GROUP | AGE_GROUP, data=MA_data_tabele, overall=c(left="Total"), caption=caption)
 #footnote=footnote)
 ```
 
@@ -340,41 +340,41 @@ MA_data$EXTERNAL_REGULATION_SUM <- (MA_data$EXTERNAL_REGULATION_1 + MA_data$EXTE
 
 psych::alpha(subset(MA_data, select = c(EXTERNAL_REGULATION_1,EXTERNAL_REGULATION_2,EXTERNAL_REGULATION_2)))
 
-#Crombachs α : .85
+#Cronbachs α : .85
 
 #INTROJECTED_REGULATION
 MA_data$INTROJECTED_REGULATION_SUM <- (MA_data$INTROJECTED_REGULATION_1 + MA_data$INTROJECTED_REGULATION_2 + MA_data$INTROJECTED_REGULATION_3) / 3
 
 psych::alpha(subset(MA_data, select = c(INTROJECTED_REGULATION_1,INTROJECTED_REGULATION_2,INTROJECTED_REGULATION_3)))
 
-#Crombachs α : .80
+#Cronbachs α : .80
 
 #IDENTIFIED_REGUALTION
 MA_data$IDENTIFIED_REGUALTION_SUM <- (MA_data$IDENTIFIED_REGUALTION_1 + MA_data$IDENTIFIED_REGUALTION_2 + MA_data$IDENTIFIED_REGUALTION_3) / 3
 
 psych::alpha(subset(MA_data, select = c(IDENTIFIED_REGUALTION_1,IDENTIFIED_REGUALTION_2,IDENTIFIED_REGUALTION_3)))
 
-#Crombachs α : .52
+#Cronbachs α : .52
 
 MA_data$IDENTIFIED_REGUALTION_SUM_2_3 <- (MA_data$IDENTIFIED_REGUALTION_2 + MA_data$IDENTIFIED_REGUALTION_3) / 2
 
 psych::alpha(subset(MA_data, select = c(IDENTIFIED_REGUALTION_2,IDENTIFIED_REGUALTION_3)))
 
-#Crombachs α : .65
+#Cronbachs α : .65
 
 #INTEGRATED_REGULATION
 MA_data$INTEGRATED_REGULATION_SUM <- (MA_data$INTEGRATED_REGULATION_1 + MA_data$INTEGRATED_REGULATION_2 + MA_data$INTEGRATED_REGULATION_3) / 3
 
 psych::alpha(subset(MA_data, select = c(INTEGRATED_REGULATION_1,INTEGRATED_REGULATION_2,INTEGRATED_REGULATION_3)))
 
-#Crombachs α : .81
+#Cronbachs α : .81
 
 #INTRINSIC_REGUALTION
 MA_data$INTRINSIC_REGULATION_SUM <- (MA_data$INTRINSIC_REGUALTION_1 + MA_data$INTRINSIC_REGUALTION_2 + MA_data$INTRINSIC_REGUALTION_3) / 3
 
 psych::alpha(subset(MA_data, select = c(INTRINSIC_REGUALTION_1,INTRINSIC_REGUALTION_2,INTRINSIC_REGUALTION_3)))
 
-#Crombachs α : .77
+#Cronbachs α : .77
 ```
 
 #Creat Index Intention
@@ -383,7 +383,7 @@ MA_data$INTENTION_SUM <- (MA_data$INTENTION_1 + MA_data$INTENTION_2 + MA_data$IN
 
 psych::alpha(subset(MA_data, select = c(INTENTION_1,INTENTION_2,INTENTION_3)))
 
-#Crombachs α : 0.98
+#Cronbachs α : 0.98
 ```
 #Analysis of the preconditions 
 
@@ -423,19 +423,20 @@ summary(MA_data_no_outliers)
 
 #No observations in the ‘Outliners’ data set. Accordingly, there are no outliers
 ```
-
+#ANOVA Requirements
 ```{r}
 ANOVA_BENEFIT <- aov(INTENTION_SUM ~ Condition + AGE_GROUP + Condition*AGE_GROUP, data = MA_data)
 
 #Cook Distanz test
 plot(ANOVA_BENEFIT, 4)
 cd <- cooks.distance(ANOVA_BENEFIT)
-#view(cd<4/396)
+view(cd<4/396)
 
 indices_to_remove <- c(1, 22, 85, 113, 175, 192, 216, 231, 267, 268, 273, 309, 328, 330, 337, 399, 400, 401, 403)
 
 MA_data_no_outliers <- MA_data_no_outliers[-indices_to_remove, ]
 
+#ANOVA without outliers
 ANOVA_BENEFIT_NO_OUTLIERS <- aov(INTENTION_SUM ~ Condition + AGE_GROUP + Condition*AGE_GROUP, data = MA_data_no_outliers)
 #Requirement 1: Metric scaling of the AV : Yes
 
@@ -448,7 +449,7 @@ leveneTest(INTENTION_SUM ~ Condition*AGE_GROUP, data = MA_data_no_outliers)
 #The variances are not equal, as p < 0.05. Violation of the homogeneity assumption.
 
 ```
-#ANOVA Testen
+#ANOVA Requierements 2
 ```{r}
 
 
@@ -516,6 +517,8 @@ hist(scale(Young$INTRINSIC_REGULATION_SUM))
 shapiro.test(Old$INTRINSIC_REGULATION_SUM)
 hist(scale(Old$INTRINSIC_REGULATION_SUM))
 
+#uniform distribution is not given according to the shapiro test, the histograms suggest a partial uniform distribution
+
 #equality of variances 
 LeveneTest(MA_data$AMOTIVATION_SUM, MA_data$Condition)
 LeveneTest(MA_data$EXTERNAL_REGULATION_SUM, MA_data$AGE_GROUP)
@@ -524,7 +527,7 @@ LeveneTest(MA_data$IDENTIFIED_REGUALTION_SUM, MA_data$AGE_GROUP)
 LeveneTest(MA_data$INTEGRATED_REGULATION_SUM, MA_data$AGE_GROUP)
 LeveneTest(MA_data$INTRINSIC_REGULATION_SUM, MA_data$AGE_GROUP)
 
-#equal variance is given
+#equal variance for all is given
 ```
 
 
@@ -543,9 +546,9 @@ H3 Interaction Hypothesis(Interaction):In contrast to the social incentive, the 
 ```{r}
 #Since there is no homogeneity of variance, the standard errors must be calculated "robustly". This function ensures that the ANOVA is less susceptible to unequal variances
 
-summary(ANOVA_BENEFIT, robust = TRUE)
+#summary(ANOVA_BENEFIT, robust = TRUE)
 
-Anova(ANOVA_BENEFIT, type=3)
+#Anova(ANOVA_BENEFIT, type=3)
 
 #ANOVA with Cook Distance Test
 Anova(ANOVA_BENEFIT_NO_OUTLIERS, type=3)
@@ -568,7 +571,7 @@ par(mar = c(5, 5, 4, 2) + 2.0)
 plot(TUKEY_no_outliers , las=1, col="#00688B")
 
 #Table ANOVA
-apa.aov.table(ANOVA_BENEFIT, filename = "ANOVA_APA_2.doc")
+#apa.aov.table(ANOVA_BENEFIT, filename = "ANOVA_APA_2.doc")
 
 #apa.aov.table(ANOVA_BENEFIT_NO_OUTLIERS, filename = "ANOVA_APA_3.doc")
 
@@ -576,6 +579,11 @@ apa.aov.table(ANOVA_BENEFIT, filename = "ANOVA_APA_2.doc")
 #boxplot(INTENTION_SUM ~ AGE_GROUP, col = c("blue", "green"), data=MA_data)
 
 #ggboxplot(MA_data, x= "INTENTION_SUM", y = "AGE_GROUP", color = "green")
+
+#correlations
+
+cor.test(MA_data$ALTER,MA_data$INTENTION_SUM)
+cor.test(MA_data$AGE_GROUP_MEDIATION,MA_data$INTENTION_SUM)
 ```
 
 H1 must be discarded
@@ -653,29 +661,47 @@ boxplot(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP)
 boxplot(MA_data$INTRINSIC_REGULATION_SUM ~ MA_data$AGE_GROUP)
 
 coin::wilcox_test(MA_data$AMOTIVATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
+#signifikant
 
 coin::wilcox_test(MA_data$EXTERNAL_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
+#signifikant
 
 coin::wilcox_test(MA_data$INTROJECTED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
+#not signifikant
 
 coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
+#signifikant
 
 coin::wilcox_test(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
+#signifikant
 
 coin::wilcox_test(MA_data$INTRINSIC_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
+#signifikant
 
 #Effect Size
-
 wilcox_effsize(MA_data, AMOTIVATION_SUM ~ AGE_GROUP, alternative = "greater", mu = 0)
+# 0.28
 
-
-wilcox_effsize(MA_data, EXTERNAL_REGULATION_SUM ~ AGE_GROUP, alternative = "greater", mu = 0)
+wilcox_effsize(MA_data, EXTERNAL_REGULATION_SUM ~ AGE_GROUP, alternative = "greater", mu = 0) 
+#0.17
 wilcox_effsize(MA_data, INTROJECTED_REGULATION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
+#not signifikant
 wilcox_effsize(MA_data, IDENTIFIED_REGUALTION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
+#0,28
 
 wilcox_effsize(MA_data, INTEGRATED_REGULATION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
+#0,35
 wilcox_effsize(MA_data, INTRINSIC_REGULATION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
-
+#0,45
+```
+#Correlations for the SDT
+```{r}
+cor.test(MA_data$ALTER, MA_data$AMOTIVATION_SUM)
+cor.test(MA_data$ALTER, MA_data$EXTERNAL_REGULATION_SUM)
+cor.test(MA_data$ALTER, MA_data$INTROJECTED_REGULATION_SUM)
+cor.test(MA_data$ALTER, MA_data$IDENTIFIED_REGUALTION_SUM)
+cor.test(MA_data$ALTER, MA_data$INTEGRATED_REGULATION_SUM)
+cor.test(MA_data$ALTER, MA_data$INTRINSIC_REGULATION_SUM)
 ```
 #graphic processing T-Tests
 
@@ -839,14 +865,7 @@ process(data = MA_data, model=15, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m
 ```
 
 #Correlations
-```{r}
-cor.test(MA_data$ALTER, MA_data$AMOTIVATION_SUM)
-cor.test(MA_data$ALTER, MA_data$EXTERNAL_REGULATION_SUM)
-cor.test(MA_data$ALTER, MA_data$INTROJECTED_REGULATION_SUM)
-cor.test(MA_data$ALTER, MA_data$IDENTIFIED_REGUALTION_SUM)
-cor.test(MA_data$ALTER, MA_data$INTEGRATED_REGULATION_SUM)
-cor.test(MA_data$ALTER, MA_data$INTRINSIC_REGULATION_SUM)
-```
+
 ```{r}
 cor.test(MA_data$INTENTION_SUM, MA_data$AMOTIVATION_SUM)
 cor.test(MA_data$INTENTION_SUM, MA_data$EXTERNAL_REGULATION_SUM)
