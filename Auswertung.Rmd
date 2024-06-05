@@ -582,8 +582,8 @@ plot(TUKEY_no_outliers , las=1, col="#00688B")
 
 #correlations
 
-cor.test(MA_data$ALTER,MA_data$INTENTION_SUM)
-cor.test(MA_data$AGE_GROUP_MEDIATION,MA_data$INTENTION_SUM)
+cor.test(MA_data_no_outliers$ALTER,MA_data_no_outliers$INTENTION_SUM)
+cor.test(MA_data_no_outliers$AGE_GROUP_MEDIATION,MA_data_no_outliers$INTENTION_SUM)
 ```
 
 H1 must be discarded
@@ -703,6 +703,16 @@ cor.test(MA_data$ALTER, MA_data$IDENTIFIED_REGUALTION_SUM)
 cor.test(MA_data$ALTER, MA_data$INTEGRATED_REGULATION_SUM)
 cor.test(MA_data$ALTER, MA_data$INTRINSIC_REGULATION_SUM)
 ```
+#Table correlation and SDT
+```{r}
+subset_cor_SDT <- subset(MA_data, select = c(ALTER,AMOTIVATION_SUM,EXTERNAL_REGULATION_SUM,INTROJECTED_REGULATION_SUM,IDENTIFIED_REGUALTION_SUM,INTEGRATED_REGULATION_SUM,INTRINSIC_REGULATION_SUM))
+
+
+apa.cor.table(subset_cor_SDT, filename = "Cor_SDT.doc",
+              table.number = 85)
+
+```
+
 #graphic processing T-Tests
 
 ```{r}
