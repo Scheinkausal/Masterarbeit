@@ -425,7 +425,7 @@ summary(MA_data_no_outliers)
 ```
 #ANOVA Requirements
 ```{r}
-ANOVA_BENEFIT <- aov(INTENTION_SUM ~ Condition + AGE_GROUP + Condition*AGE_GROUP, data = MA_data)
+ANOVA_BENEFIT <- aov(INTENTION_SUM ~ Condition + AGE_GROUP + Condition*AGE_GROUP,p.adjust.method = "bonferroni",  data = MA_data)
 
 #Cook Distanz test
 plot(ANOVA_BENEFIT, 4)
@@ -437,7 +437,7 @@ indices_to_remove <- c(1, 22, 85, 113, 175, 192, 216, 231, 267, 268, 273, 309, 3
 MA_data_no_outliers <- MA_data_no_outliers[-indices_to_remove, ]
 
 #ANOVA without outliers
-ANOVA_BENEFIT_NO_OUTLIERS <- aov(INTENTION_SUM ~ Condition + AGE_GROUP + Condition*AGE_GROUP, data = MA_data_no_outliers)
+ANOVA_BENEFIT_NO_OUTLIERS <- aov(INTENTION_SUM ~ Condition + AGE_GROUP + Condition*AGE_GROUP, p.adjust.method = "bonferroni", data = MA_data_no_outliers)
 #Requirement 1: Metric scaling of the AV : Yes
 
 #Requirement 2: Homogeneity of variances
