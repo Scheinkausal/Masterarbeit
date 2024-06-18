@@ -679,7 +679,7 @@ coin::wilcox_test(MA_data$INTRINSIC_REGULATION_SUM ~ MA_data$AGE_GROUP, data = M
 #signifikant
 
 #Effect Size
-wilcox_effsize(MA_data, AMOTIVATION_SUM ~ AGE_GROUP, alternative = "greater", mu = 0)
+wilcox_effsize(MA_data, AMOTIVATION_SUM ~ AGE_GROUP, alternative = "greater", mu = 0) 
 # 0.28
 
 wilcox_effsize(MA_data, EXTERNAL_REGULATION_SUM ~ AGE_GROUP, alternative = "greater", mu = 0) 
@@ -693,6 +693,69 @@ wilcox_effsize(MA_data, INTEGRATED_REGULATION_SUM ~ AGE_GROUP, alternative = "le
 #0,35
 wilcox_effsize(MA_data, INTRINSIC_REGULATION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
 #0,45
+```
+#T tests dependent on blood donation behaviour
+
+```{r}
+Only_BDB_Yes <- subset(MA_data, BDB_GROUP == "Ja")
+
+Only_BDB_No <- subset(MA_data, BDB_GROUP == "Nein")
+```
+#Probierstation für BDB YES
+```{r}
+coin::wilcox_test(AMOTIVATION_SUM ~ AGE_GROUP, data = Only_BDB_Yes, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
+
+wilcox_effsize(Only_BDB_Yes, AMOTIVATION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
+
+SDTsubset_BDB_YES <- Only_BDB_Yes[,c("AMOTIVATION_SUM", "EXTERNAL_REGULATION_SUM", "INTROJECTED_REGULATION_SUM","IDENTIFIED_REGUALTION_SUM", "INTEGRATED_REGULATION_SUM", "INTRINSIC_REGULATION_SUM", "AGE_GROUP")]
+
+data_determinants_BDB_YES <- reshape2::melt(SDTsubset_BDB_YES,id = "AGE_GROUP")
+
+data_determinants_BDB_YES$Determinants <- factor(data_determinants_BDB_YES$variable, levels = c("AMOTIVATION_SUM", "EXTERNAL_REGULATION_SUM", "INTROJECTED_REGULATION_SUM","IDENTIFIED_REGUALTION_SUM", "INTEGRATED_REGULATION_SUM", "INTRINSIC_REGULATION_SUM"),
+labels = c("Amotivation", "Externe Regulation", "Introjizierte Regulation", "Identifizierte Regulation", "Integrierte Regulation", "Intrinsische Motivation")
+)
+
+data_determinants_BDB_YES$Determinants <- str_wrap(data_determinants_BDB_YES$Determinants, width = 10)
+#mean(MA_data$AMOTIVATION_SUM[MA_data$AGE_GROUP == "18-29"])
+
+ggbarplot(
+data_determinants_BDB_YES,
+x = "Determinants",
+y = "value",
+fill = "AGE_GROUP",
+add = c("mean_ci"),
+position = position_dodge(0.8),
+color = "black",
+add.params = list(group = "AGE_GROUP"),
+legend = "bottom",
+xlab = "",
+ylab = "",
+ylim = c(0,7),
+title = "Motivationsarten der Self-Determination Theory",
+subtitle = "Mean and 95% confidence intervals.\n",
+font.x = c(10, "plain", "#111111"),
+font.y = c(10, "plain", "#111111"),
+font.label = c(10, "plain", "#111111"),
+font.legend = c(10, "plain", "#111111"),
+font.tickslab = c(10, "plain", "#111111"),
+font.title = c(12, "bold", "#111111"),
+font.subtitle = c(10, "plain", "#111111"),
+label = TRUE,
+lab.pos = "out",
+lab.col = "#eeeeee",
+lab.size = 3.6,
+lab.vjust = 3.5,
+lab.hjust = 0.5,
+lab.nb.digits = 2,
+orientation = "horiz",
+) + scale_fill_manual(
+name = "",
+labels=c("18-29 Jahre","30-75 Jahre"),
+values = c("#00868B","#00688B")
+)+ scale_y_continuous(
+expand = c(0, 0),
+breaks=c(1,2,3,4,5,6,7),
+) + coord_cartesian(ylim=c(0,7)) + theme (plot.margin = margin(0, 1, 0, 0, "cm"))
 ```
 #Correlations for the SDT
 ```{r}
@@ -852,9 +915,7 @@ breaks=c(1,2,3,4,5,6,7),
 ```
 ```
 
-
-
-##Mediation
+#Mediation
 ```{r}
 
 process(data = MA_data, model=15, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="AMOTIVATION_SUM", w="c_0001",seed = 654321)
@@ -880,13 +941,7 @@ cor.test(MA_data$INTENTION_SUM, MA_data$INTEGRATED_REGULATION_SUM)
 cor.test(MA_data$INTENTION_SUM, MA_data$INTRINSIC_REGULATION_SUM)
 ```
 
-#T tests dependent on blood donation behaviour
 
-```{r}
-Only_BDB_Yes <- subset(MA_data, BDB_GROUP == "Ja")
-
-Only_BDB_No <- subset(MA_data, BDB_GROUP == "Nein")
-```
 
 
 
@@ -932,56 +987,5 @@ boxplot(Only_BDB_No$INTENTION_SUM ~ Only_BDB_No$AGE_GROUP)
 describe(Only_BDB_No)
 ```
 
-#Probierstation für BDB YES
-```{r}
-SDTsubset_BDB_YES <- Only_BDB_Yes[,c("AMOTIVATION_SUM", "EXTERNAL_REGULATION_SUM", "INTROJECTED_REGULATION_SUM","IDENTIFIED_REGUALTION_SUM", "INTEGRATED_REGULATION_SUM", "INTRINSIC_REGULATION_SUM", "AGE_GROUP")]
 
-data_determinants_BDB_YES <- reshape2::melt(SDTsubset_BDB_YES,id = "AGE_GROUP")
-
-data_determinants_BDB_YES$Determinants <- factor(data_determinants_BDB_YES$variable, levels = c("AMOTIVATION_SUM", "EXTERNAL_REGULATION_SUM", "INTROJECTED_REGULATION_SUM","IDENTIFIED_REGUALTION_SUM", "INTEGRATED_REGULATION_SUM", "INTRINSIC_REGULATION_SUM"),
-labels = c("Amotivation", "Externe Regulation", "Introjizierte Regulation", "Identifizierte Regulation", "Integrierte Regulation", "Intrinsische Motivation")
-)
-
-data_determinants_BDB_YES$Determinants <- str_wrap(data_determinants_BDB_YES$Determinants, width = 10)
-#mean(MA_data$AMOTIVATION_SUM[MA_data$AGE_GROUP == "18-29"])
-
-ggbarplot(
-data_determinants_BDB_YES,
-x = "Determinants",
-y = "value",
-fill = "AGE_GROUP",
-add = c("mean_ci"),
-position = position_dodge(0.8),
-color = "black",
-add.params = list(group = "AGE_GROUP"),
-legend = "bottom",
-xlab = "",
-ylab = "",
-ylim = c(0,7),
-title = "Motivationsarten der Self-Determination Theory",
-subtitle = "Mean and 95% confidence intervals.\n",
-font.x = c(10, "plain", "#111111"),
-font.y = c(10, "plain", "#111111"),
-font.label = c(10, "plain", "#111111"),
-font.legend = c(10, "plain", "#111111"),
-font.tickslab = c(10, "plain", "#111111"),
-font.title = c(12, "bold", "#111111"),
-font.subtitle = c(10, "plain", "#111111"),
-label = TRUE,
-lab.pos = "out",
-lab.col = "#eeeeee",
-lab.size = 3.6,
-lab.vjust = 3.5,
-lab.hjust = 0.5,
-lab.nb.digits = 2,
-orientation = "horiz",
-) + scale_fill_manual(
-name = "",
-labels=c("18-29 Jahre","30-75 Jahre"),
-values = c("#00868B","#00688B")
-)+ scale_y_continuous(
-expand = c(0, 0),
-breaks=c(1,2,3,4,5,6,7),
-) + coord_cartesian(ylim=c(0,7)) + theme (plot.margin = margin(0, 1, 0, 0, "cm"))
-```
 
