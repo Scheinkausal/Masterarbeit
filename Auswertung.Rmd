@@ -460,6 +460,8 @@ nvno <- lm(INTENTION_SUM ~ Condition*AGE_GROUP, data = MA_data_no_outliers)
 ANOVA_BENEFIT_ONE_WAY <- oneway.test(INTENTION_SUM ~ Condition + AGE_GROUP + Condition*AGE_GROUP, data = MA_data, var.equal = FALSE)
 print(ANOVA_BENEFIT_ONE_WAY)
 
+hist(rstandard(ANOVA_BENEFIT_NO_OUTLIERS))
+
 ggqqplot(residuals(nv))
 ggqqplot(residuals(nvno))
 #plot(ANOVA_BENEFIT, 2)
