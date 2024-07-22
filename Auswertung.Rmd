@@ -66,7 +66,7 @@ library(multcompView)
 ```
 #load Data
 ```{r}
-data  <- read.csv("data_project_1013280_2024_04_17.csv", sep = ";")
+data  <- read.csv("data_project_1013280_2024_04_17_cut.csv", sep = ";")
 ```
 
 #Of the total n = 405 participants, two people stated an age of under 18 or over 75. In addition, 7 participants did not pass the Attention Check. There were no overlaps between the participants. 
@@ -522,7 +522,7 @@ hist(scale(Old$INTRINSIC_REGULATION_SUM))
 #uniform distribution is not given according to the shapiro test, the histograms suggest a partial uniform distribution
 
 #equality of variances 
-LeveneTest(MA_data$AMOTIVATION_SUM, MA_data$Condition)
+LeveneTest(MA_data$AMOTIVATION_SUM, MA_data$AGE_GROUP)
 LeveneTest(MA_data$EXTERNAL_REGULATION_SUM, MA_data$AGE_GROUP)
 LeveneTest(MA_data$INTROJECTED_REGULATION_SUM, MA_data$AGE_GROUP)
 LeveneTest(MA_data$IDENTIFIED_REGUALTION_SUM, MA_data$AGE_GROUP)
@@ -550,7 +550,7 @@ H3 Interaction Hypothesis(Interaction):In contrast to the social incentive, the 
 
 #summary(ANOVA_BENEFIT, robust = TRUE)
 
-#Anova(ANOVA_BENEFIT, type=3)
+Anova(ANOVA_BENEFIT, type=3)
 
 #ANOVA with Cook Distance Test
 Anova(ANOVA_BENEFIT_NO_OUTLIERS, type=3)
@@ -774,6 +774,11 @@ subset_cor_SDT <- subset(MA_data, select = c(ALTER,AMOTIVATION_SUM,EXTERNAL_REGU
 
 
 apa.cor.table(subset_cor_SDT, filename = "Cor_SDT.doc",
+              table.number = 85)
+
+subset_cor_SDT_INT <- subset(MA_data, select = c(INTENTION_SUM,AMOTIVATION_SUM,EXTERNAL_REGULATION_SUM,INTROJECTED_REGULATION_SUM,IDENTIFIED_REGUALTION_SUM,INTEGRATED_REGULATION_SUM,INTRINSIC_REGULATION_SUM))
+
+apa.cor.table(subset_cor_SDT_INT, filename = "Cor_SDT_INT.doc",
               table.number = 85)
 
 ```
