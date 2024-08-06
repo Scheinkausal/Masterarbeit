@@ -64,14 +64,14 @@ library(rstatix)
 library(hrbrthemes)
 library(multcompView)
 ```
-#load Data
+#Load data
 ```{r}
 data  <- read.csv("data_project_1013280_2024_04_17_cut.csv", sep = ";")
 ```
 
 #Of the total n = 405 participants, two people stated an age of under 18 or over 75. In addition, 7 participants did not pass the Attention Check. There were no overlaps between the participants. 
 
-#Clean Data
+#Clean data
 ```{r}
 MA_data <- subset(data, ALTER >= 18 & ALTER <= 75 & ATTENTION_CHECK == 1)
 
@@ -80,24 +80,16 @@ MA_data <- subset(data, ALTER >= 18 & ALTER <= 75 & ATTENTION_CHECK == 1)
 ```{r}
 #describe(data)
 
-#table(data$ALTER)
+#describe(MA_data)
 
-#table(data$ATTENTION_CHECK)
-
-#table(data$ALTER, data$ATTENTION_CHECK != 1)
-
-#head(MA_data)
-
-#unique(MA_data$AGE_GROUP)
-
-#show(MA_data$AGE_GROUP)
 ```
 
 #Data preperation
 
-
 ##Age Groups
 ```{r}
+summary(MA_data$ALTER)
+
 MA_data$AGE_GROUP <- NA
 MA_data$AGE_GROUP <- factor(
   MA_data$AGE_GROUP,
@@ -108,7 +100,7 @@ MA_data$AGE_GROUP <- factor(
 MA_data$AGE_GROUP[which(MA_data$ALTER >= 18 & MA_data$ALTER <=29 )] <- "18-29"
 MA_data$AGE_GROUP[which(MA_data$ALTER >= 30 & MA_data$ALTER <= 75 )] <- "30-75"
 
-summary(MA_data$ALTER)
+
 table(MA_data$ALTER<30, MA_data$ALTER>=30)
 
 summary(MA_data$AGE_GROUP)
@@ -118,15 +110,15 @@ agegroupwave <- c(
   "2" = "30-75"
 )
 
-MA_data$AGE_GROUP_MEDIATION <- 0  # Setze zunächst alle Werte auf 0
-MA_data$AGE_GROUP_MEDIATION[which(MA_data$ALTER >= 18 & MA_data$ALTER <= 29)] <- 1  # Setze die entsprechenden Werte auf 1
-MA_data$AGE_GROUP_MEDIATION[which(MA_data$ALTER >= 30 & MA_data$ALTER <= 75)] <- 2  # Setze die entsprechenden Werte auf 2
-MA_data$AGE_GROUP_MEDIATION <- as.integer(MA_data$AGE_GROUP_MEDIATION)  # Konvertiere die Spalte in Ganzzahlen
+MA_data$AGE_GROUP_MEDIATION <- 0  
+MA_data$AGE_GROUP_MEDIATION[which(MA_data$ALTER >= 18 & MA_data$ALTER <= 29)] <- 1  
+MA_data$AGE_GROUP_MEDIATION[which(MA_data$ALTER >= 30 & MA_data$ALTER <= 75)] <- 2  
+MA_data$AGE_GROUP_MEDIATION <- as.integer(MA_data$AGE_GROUP_MEDIATION)  
 
 
 ```
 
-##Gender Groups
+##Gender groups
 ```{r}
 MA_data$GENDER_GROUP <- NA
 MA_data$GENDER_GROUP <- factor(
@@ -142,11 +134,6 @@ MA_data$GENDER_GROUP[which(MA_data$GESCHLECHT == 4)] <- "Keine Angabe"
 
 summary(MA_data$GENDER_GROUP)
 
-#data$GESCHLECHT <- factor(
-#data$GESCHLECHT,
-#levels = c(1,2,3,4),
-#labels = c("Weiblich", "Männlich","Divers","Keine Angabe")
-#)
 ```
 
 ##Education Groups
@@ -225,8 +212,6 @@ labels = c("Individueller Anreiz", "Sozialer Anreiz", "Kontrollgruppe")
 #summary(data$c_0001)
 ```
 
-
-
 #Descriptives
 
 ##Demographics
@@ -256,23 +241,23 @@ labels = c("Individueller Anreiz", "Sozialer Anreiz", "Kontrollgruppe")
 ```
 
 ```{r}
-MA_data_tabele <- MA_data
+MA_data_table <- MA_data
 
-label(MA_data_tabele$GENDER_GROUP)       <- "Geschlecht"
-label(MA_data_tabele$ALTER)       <- "Alter"
-label(MA_data_tabele$EDUCATION_GROUP)     <- "Bildung"
-label(MA_data_tabele$COUNTRY_GROUP) <- "Land"
-label(MA_data_tabele$BDB_GROUP) <- "Blutspendeverhalten"
-label(MA_data_tabele$BDO_GROUP) <- "Blutspendeorganisation"
+label(MA_data_table$GENDER_GROUP)       <- "Geschlecht"
+label(MA_data_table$ALTER)       <- "Alter"
+label(MA_data_table$EDUCATION_GROUP)     <- "Bildung"
+label(MA_data_table$COUNTRY_GROUP) <- "Land"
+label(MA_data_table$BDB_GROUP) <- "Blutspendeverhalten"
+label(MA_data_table$BDO_GROUP) <- "Blutspendeorganisation"
 
-units(MA_data_tabele$ALTER)       <- "Jahre"
+units(MA_data_table$ALTER)       <- "Jahre"
 
 caption  <- "Deskriptive Daten"
 #footnote <- "ᵃ Also known as Breslow thickness"
 
-table1(~ GENDER_GROUP + ALTER + EDUCATION_GROUP + COUNTRY_GROUP + BDB_GROUP + BDO_GROUP | Condition, data=MA_data_tabele, overall=c(left="Total"), caption=caption)
+table1(~ GENDER_GROUP + ALTER + EDUCATION_GROUP + COUNTRY_GROUP + BDB_GROUP + BDO_GROUP | Condition, data=MA_data_table, overall=c(left="Total"), caption=caption)
 
-table1(~ GENDER_GROUP + ALTER + EDUCATION_GROUP + COUNTRY_GROUP + BDB_GROUP + BDO_GROUP | AGE_GROUP, data=MA_data_tabele, overall=c(left="Total"), caption=caption)
+table1(~ GENDER_GROUP + ALTER + EDUCATION_GROUP + COUNTRY_GROUP + BDB_GROUP + BDO_GROUP | AGE_GROUP, data=MA_data_table, overall=c(left="Total"), caption=caption)
 #footnote=footnote)
 ```
 
@@ -312,6 +297,7 @@ p <- MA_data %>%
   )
 p
 
+shapiro.test(MA_data$ALTER)
 #table(MA_data$ALTER)
 ```
 
@@ -323,11 +309,11 @@ MA_data$AMOTIVATION_SUM <- (MA_data$AMOTIVATION_1 + MA_data$AMOTIVATION_2 + MA_d
 
 psych::alpha(subset(MA_data, select = c(AMOTIVATION_1,AMOTIVATION_2,AMOTIVATION_3)))
 
-#Crombachs α : .53
+#Cronbachs α : .53
 
 psych::alpha(subset(MA_data, select = c(AMOTIVATION_1,AMOTIVATION_2)))
 
-#Crombachs α : .64
+#Cronbachs α : .64
 
 MA_data$AMOTIVATION_SUM_1_2 <- (MA_data$AMOTIVATION_1 + MA_data$AMOTIVATION_2) / 2
 
@@ -551,6 +537,13 @@ H3 Interaction Hypothesis(Interaction):In contrast to the social incentive, the 
 #summary(ANOVA_BENEFIT, robust = TRUE)
 
 Anova(ANOVA_BENEFIT, type=3)
+
+MA_data_no_outliers %>%
+ group_by(Condition, AGE_GROUP) %>%
+ summarise(M = mean(INTENTION_SUM),
+           SD = sd(INTENTION_SUM),
+           N = n()) %>%
+  as.data.frame()
 
 #ANOVA with Cook Distance Test
 Anova(ANOVA_BENEFIT_NO_OUTLIERS, type=3)
