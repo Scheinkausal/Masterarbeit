@@ -416,7 +416,7 @@ ANOVA_BENEFIT <- aov(INTENTION_SUM ~ Condition + AGE_GROUP + Condition*AGE_GROUP
 #Cook Distanz test
 plot(ANOVA_BENEFIT, 4)
 cd <- cooks.distance(ANOVA_BENEFIT)
-view(cd<4/396)
+#view(cd<4/396)
 
 indices_to_remove <- c(1, 22, 85, 113, 175, 192, 216, 231, 267, 268, 273, 309, 328, 330, 337, 399, 400, 401, 403)
 
@@ -535,16 +535,28 @@ H3 Interaction Hypothesis(Interaction):In contrast to the social incentive, the 
 #Since there is no homogeneity of variance, the standard errors must be calculated "robustly". This function ensures that the ANOVA is less susceptible to unequal variances
 
 #summary(ANOVA_BENEFIT, robust = TRUE)
-
 Anova(ANOVA_BENEFIT, type=3)
 
 MA_data_no_outliers %>%
- group_by(Condition, AGE_GROUP) %>%
+ group_by(Condition) %>%
  summarise(M = mean(INTENTION_SUM),
            SD = sd(INTENTION_SUM),
            N = n()) %>%
   as.data.frame()
 
+MA_data_no_outliers %>%
+ group_by(AGE_GROUP) %>%
+ summarise(M = mean(INTENTION_SUM),
+           SD = sd(INTENTION_SUM),
+           N = n()) %>%
+  as.data.frame()
+
+MA_data_no_outliers %>%
+ group_by(Condition) %>%
+ summarise(M = mean(INTENTION_SUM),
+           SD = sd(INTENTION_SUM),
+           N = n()) %>%
+  as.data.frame()
 #ANOVA with Cook Distance Test
 Anova(ANOVA_BENEFIT_NO_OUTLIERS, type=3)
 
@@ -640,6 +652,24 @@ H4 Amotivation Hypothesis: Amotivation is significantly higher in the younger ag
 H5 Extrinsic Hypothesis: the younger the participants, the more extrinsic the motivation factor of the self-determination theory
 
 ```{r}
+MA_data %>%
+  group_by(AGE_GROUP) %>%
+  summarise(
+    M_AMOTIVATION = mean(AMOTIVATION_SUM, na.rm = TRUE),
+    SD_AMOTIVATION = sd(AMOTIVATION_SUM, na.rm = TRUE),
+    M_EXTERNAL = mean(EXTERNAL_REGULATION_SUM, na.rm = TRUE),
+    SD_EXTERNAL = sd(EXTERNAL_REGULATION_SUM, na.rm = TRUE),
+    M_INTROJECTED = mean(INTROJECTED_REGULATION_SUM, na.rm = TRUE),
+    SD_INTROJECTED = sd(INTROJECTED_REGULATION_SUM, na.rm = TRUE),
+    M_IDENTIFIED = mean(IDENTIFIED_REGUALTION_SUM, na.rm = TRUE),
+    SD_IDENTIFIED = sd(IDENTIFIED_REGUALTION_SUM, na.rm = TRUE),
+    M_INTEGRATED = mean(INTEGRATED_REGULATION_SUM, na.rm = TRUE),
+    SD_INTEGRATED = sd(INTEGRATED_REGULATION_SUM, na.rm = TRUE),
+    M_INTRINSIC = mean(INTRINSIC_REGULATION_SUM, na.rm = TRUE),
+    SD_INTRINSIC = sd(INTRINSIC_REGULATION_SUM, na.rm = TRUE)
+  ) %>%
+  as.data.frame()
+
 describeBy(MA_data$AMOTIVATION_SUM, MA_data$AGE_GROUP)
 describeBy(MA_data$EXTERNAL_REGULATION_SUM, MA_data$AGE_GROUP)
 describeBy(MA_data$INTROJECTED_REGULATION_SUM, MA_data$AGE_GROUP)
@@ -873,6 +903,16 @@ breaks=c(1,2,3,4,5,6,7),
 
 ##Crombachs alpha
 ```{r}
+MA_data %>%
+   group_by(AGE_GROUP) %>%
+   summarise(
+     M_AMOTIVATION = mean(AMOTIVATION_SUM_1_2, na.rm = TRUE),
+     SD_AMOTIVATION = sd(AMOTIVATION_SUM_1_2, na.rm = TRUE),
+     M_IDENTIFIED = mean(IDENTIFIED_REGUALTION_SUM_2_3, na.rm = TRUE),
+     SD_IDENTIFIED = sd(IDENTIFIED_REGUALTION_SUM_2_3, na.rm = TRUE),
+   ) %>%
+   as.data.frame()
+
 coin::wilcox_test(MA_data$AMOTIVATION_SUM_1_2 ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
 
 wilcox_effsize(MA_data, AMOTIVATION_SUM_1_2 ~ AGE_GROUP, alternative = "greater", mu = 0)
