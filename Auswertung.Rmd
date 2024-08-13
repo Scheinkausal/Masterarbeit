@@ -15,17 +15,6 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-#plot(pressure)
-```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
@@ -33,7 +22,6 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
 The following analyses are reported in our method study and sorted according to the order in which they appear in the corresponding report.
 
 ```{r include=FALSE, warning = FALSE, message = FALSE}
-#load packages
 library(psych)
 library(expss)
 library(plyr)
@@ -69,7 +57,7 @@ library(multcompView)
 data  <- read.csv("data_project_1013280_2024_04_17_cut.csv", sep = ";")
 ```
 
-#Of the total n = 405 participants, two people stated an age of under 18 or over 75. In addition, 7 participants did not pass the Attention Check. There were no overlaps between the participants. 
+##Of the total n = 405 participants, two people stated an age of under 18 or over 75. In addition, 7 participants did not pass the Attention Check. There were no overlaps between the participants. 
 
 #Clean data
 ```{r}
@@ -78,9 +66,7 @@ MA_data <- subset(data, ALTER >= 18 & ALTER <= 75 & ATTENTION_CHECK == 1)
 ```
 #Overview
 ```{r}
-#describe(data)
-
-#describe(MA_data)
+describe(MA_data)
 
 ```
 
@@ -118,7 +104,7 @@ MA_data$AGE_GROUP_MEDIATION <- as.integer(MA_data$AGE_GROUP_MEDIATION)
 
 ```
 
-##Gender groups
+##Gender Groups
 ```{r}
 MA_data$GENDER_GROUP <- NA
 MA_data$GENDER_GROUP <- factor(
@@ -155,7 +141,7 @@ MA_data$EDUCATION_GROUP[which(MA_data$BILDUNG == 7)] <- "Andere"
 
 summary(MA_data$EDUCATION_GROUP)
 ```
-#Country Groups
+##Country Groups
 ```{r}
 MA_data$COUNTRY_GROUP <- NA
 MA_data$COUNTRY_GROUP <- factor(
@@ -171,7 +157,7 @@ MA_data$COUNTRY_GROUP[which(MA_data$LAND == 4)] <- "Andere"
 
 summary(MA_data$COUNTRY_GROUP)
 ```
-#Blood Donation Behavior Group
+##Blooddonation Behavior Group
 ```{r}
 MA_data$BDB_GROUP <- NA
 MA_data$BDB_GROUP <- factor(
@@ -184,10 +170,10 @@ MA_data$BDB_GROUP[which(MA_data$BLUTSPENDEVERHALTEN == 1)] <- "Ja"
 MA_data$BDB_GROUP[which(MA_data$BLUTSPENDEVERHALTEN == 2)] <- "Nein"
 MA_data$BDB_GROUP[which(MA_data$BLUTSPENDEVERHALTEN == 3)] <- "Keine Angabe"
 
-#table(MA_data$BDB_GROUP)
+summary(MA_data$BDB_GROUP)
 
 ```
-#Blood Donor Organisation Groups
+##Blooddonor Organisation Groups
 ```{r}
 MA_data$BDO_GROUP <- NA
 MA_data$BDO_GROUP <- factor(
@@ -200,16 +186,15 @@ MA_data$BDO_GROUP[which(MA_data$BLUTSPENDEORGANISATION == 1)] <- "Deutsches Rote
 MA_data$BDO_GROUP[which(MA_data$BLUTSPENDEORGANISATION == 3)] <- "Weiß ich nicht"
 MA_data$BDO_GROUP[which(MA_data$BLUTSPENDEORGANISATION == 4)] <- "Andere"
 
-#table(MA_data$BDO_GROUP)
+summary(MA_data$BDO_GROUP)
 ```
 
-#Experimental Conditions
+##Experimental Conditions
 ```{r}
 MA_data$Condition <- factor(MA_data$c_0001, levels = c(1,2,3))
 labels = c("Individueller Anreiz", "Sozialer Anreiz", "Kontrollgruppe")
 
-#table(MA_data$Condition)
-#summary(data$c_0001)
+summary(data$c_0001)
 ```
 
 #Descriptives
@@ -218,26 +203,27 @@ labels = c("Individueller Anreiz", "Sozialer Anreiz", "Kontrollgruppe")
 
 ###The following table shows the distribution of survey participants by demographics and experimental condition (1 = Individual Benefit, 2 = Social Benefit, 3 = Control Group)
 
+
 ```{r}
-#MA_data <- apply_labels(MA_data,
-#AGE_GROUP = "Age group",
-#GENDER_GROUP = "Gender",
-#EDUCATION_GROUP = "Level of education",
-#COUNTRY_GROUP = "Residence country")
+##this code must be adapted according to the personal file path
+MA_data <- apply_labels(MA_data,
+AGE_GROUP = "Age group",
+GENDER_GROUP = "Gender",
+EDUCATION_GROUP = "Level of education",
+COUNTRY_GROUP = "Residence country")
 
-#html_code <- MA_data %>%
-#tab_cells(AGE_GROUP,GENDER_GROUP,EDUCATION_GROUP) %>%
-#tab_cols(total(label = "Sum"),Condition) %>%
-#tab_stat_cases(total_label = "All") %>%
-#tab_pivot() %>%
-#htmlTable(align = "c",css.cell = c("width: 400px"))
+html_code <- MA_data %>%
+tab_cells(AGE_GROUP,GENDER_GROUP,EDUCATION_GROUP) %>%
+tab_cols(total(label = "Sum"),Condition) %>%
+tab_stat_cases(total_label = "All") %>%
+tab_pivot() %>%
+htmlTable(align = "c",css.cell = c("width: 400px"))
 
-#this code must be adapted according to the personal file path
+file_path <- "C:\\Users\\timri\\Desktop\\Uni Vorlesungen\\Master GeKo\\Masterarbeit\\Statistiken und Auswertung\\Auswertung"
+file_name <- "Deskriptiv.html"
 
-#file_path <- "C:\\Users\\timri\\Desktop\\Uni Vorlesungen\\Master GeKo\\Masterarbeit\\Statistiken und Auswertung\\Auswertung"
-#file_name <- "Deskriptiv.html"
+writeLines(html_code, file.path("C:\\Users\\timri\\Desktop\\Uni Vorlesungen\\Master GeKo\\Masterarbeit\\Statistiken und Auswertung\\Auswertung", "Deskriptiv.html"))
 
-#writeLines(html_code, file.path("C:\\Users\\timri\\Desktop\\Uni Vorlesungen\\Master GeKo\\Masterarbeit\\Statistiken und Auswertung\\Auswertung", "Deskriptiv.html"))
 ```
 
 ```{r}
@@ -261,7 +247,7 @@ table1(~ GENDER_GROUP + ALTER + EDUCATION_GROUP + COUNTRY_GROUP + BDB_GROUP + BD
 #footnote=footnote)
 ```
 
-#Overall percentages for gender and education are shown such as descriptive data for age by condition.
+##Overall percentages for gender and education are shown such as descriptive data for age by condition.
 ```{r}
 N <- nrow(MA_data)
 ageRange_min <- min(MA_data$ALTER)
@@ -276,9 +262,9 @@ round(table(MA_data$BILDUNG)/N*100,2)
 
 describeBy(MA_data$ALTER,MA_data$Condition)
 
-#table1(~ ageRange_max + ageRange_min + ageMean + ageSD + ageMedian, data=MA_data_tabele, caption=caption)
+table1(~ ageRange_max + ageRange_min + ageMean + ageSD + ageMedian, data=MA_data_table, caption=caption)
 ```
-#Graphical representation of the age distribution
+##Graphical representation of the age distribution
 ```{r}
 p <- MA_data %>%
   filter( ALTER<75 ) %>%
@@ -298,11 +284,10 @@ p <- MA_data %>%
 p
 
 shapiro.test(MA_data$ALTER)
-#table(MA_data$ALTER)
 ```
 
-#Determinants Self-Determination Theory
-#Creat Index
+##Determinants Self-Determination Theory
+###Creat Index
 ```{r}
 #AMOTIVATION
 MA_data$AMOTIVATION_SUM <- (MA_data$AMOTIVATION_1 + MA_data$AMOTIVATION_2 + MA_data$AMOTIVATION_3) / 3
@@ -317,9 +302,9 @@ psych::alpha(subset(MA_data, select = c(AMOTIVATION_1,AMOTIVATION_2)))
 
 MA_data$AMOTIVATION_SUM_1_2 <- (MA_data$AMOTIVATION_1 + MA_data$AMOTIVATION_2) / 2
 
-#psych::alpha(subset(MA_data, select = c(AMOTIVATION_1,AMOTIVATION_3)))
+psych::alpha(subset(MA_data, select = c(AMOTIVATION_1,AMOTIVATION_3)))
 
-#psych::alpha(subset(MA_data, select = c(AMOTIVATION_2,AMOTIVATION_3)))
+psych::alpha(subset(MA_data, select = c(AMOTIVATION_2,AMOTIVATION_3)))
 
 #EXTERNAL_REGULATION
 MA_data$EXTERNAL_REGULATION_SUM <- (MA_data$EXTERNAL_REGULATION_1 + MA_data$EXTERNAL_REGULATION_2 + MA_data$EXTERNAL_REGULATION_3) / 3
@@ -363,7 +348,7 @@ psych::alpha(subset(MA_data, select = c(INTRINSIC_REGUALTION_1,INTRINSIC_REGUALT
 #Cronbachs α : .77
 ```
 
-#Creat Index Intention
+###Creat Index Intention
 ```{r}
 MA_data$INTENTION_SUM <- (MA_data$INTENTION_1 + MA_data$INTENTION_2 + MA_data$INTENTION_3) / 3
 
@@ -373,13 +358,10 @@ psych::alpha(subset(MA_data, select = c(INTENTION_1,INTENTION_2,INTENTION_3)))
 ```
 #Analysis of the preconditions 
 
-#Test for the prerequisite of a two-factorial ANOVA
+##Test for the prerequisite of a two-factorial ANOVA
 
-##Identify and select outliers
+###Identify and select outliers
 ```{r}
-library(dplyr)
-
-
 identify_outliers <- function(data) {
   Q1 <- quantile(data$INTENTION_SUM, 0.25)
   Q3 <- quantile(data$INTENTION_SUM, 0.75)
@@ -406,17 +388,15 @@ MA_data_no_outliers <- MA_data %>%
 
 
 summary(MA_data_no_outliers)
-
-#No observations in the ‘Outliners’ data set. Accordingly, there are no outliers
 ```
-#ANOVA Requirements
+##ANOVA Requirements
 ```{r}
 ANOVA_BENEFIT <- aov(INTENTION_SUM ~ Condition + AGE_GROUP + Condition*AGE_GROUP,p.adjust.method = "bonferroni",  data = MA_data)
 
 #Cook Distanz test
 plot(ANOVA_BENEFIT, 4)
 cd <- cooks.distance(ANOVA_BENEFIT)
-#view(cd<4/396)
+view(cd<4/396)
 
 indices_to_remove <- c(1, 22, 85, 113, 175, 192, 216, 231, 267, 268, 273, 309, 328, 330, 337, 399, 400, 401, 403)
 
@@ -435,7 +415,7 @@ leveneTest(INTENTION_SUM ~ Condition*AGE_GROUP, data = MA_data_no_outliers)
 #The variances are not equal, as p < 0.05. Violation of the homogeneity assumption.
 
 ```
-#ANOVA Requierements 2
+##ANOVA Requierements 2
 ```{r}
 
 
@@ -527,7 +507,7 @@ LeveneTest(MA_data$INTRINSIC_REGULATION_SUM, MA_data$AGE_GROUP)
 
 
 
-# Preregistered analysis
+#Preregistered analysis
 The following preregistered hypotheses were tested for significance within the code.
 
 H1 Benefit Hypothesis(MainEffect):The willingness to donate blood increases significantly when an incentive is provided
@@ -536,11 +516,11 @@ H2 Age Hypothesis(MainEffect):The older the person,the higher the Blood donation
 
 H3 Interaction Hypothesis(Interaction):In contrast to the social incentive, the individual incentive increases the willingness to donate blood significantly more in younger people than in older people
 
-#ANOVA Experiment
+##ANOVA Experiment
 ```{r}
 #Since there is no homogeneity of variance, the standard errors must be calculated "robustly". This function ensures that the ANOVA is less susceptible to unequal variances
 
-#summary(ANOVA_BENEFIT, robust = TRUE)
+summary(ANOVA_BENEFIT, robust = TRUE)
 Anova(ANOVA_BENEFIT, type=3)
 
 MA_data_no_outliers %>%
@@ -571,7 +551,7 @@ TukeyHSD(ANOVA_BENEFIT, conf.level = .95)
 
 TUKEY <- TukeyHSD(ANOVA_BENEFIT, conf.level = .95)
  
-# Tuckey test representation :
+#Tuckey test representation :
 par(mar = c(5, 5, 4, 2) + 2.0)
 plot(TUKEY , las=1, col="#00688B")
 
@@ -584,17 +564,11 @@ par(mar = c(5, 5, 4, 2) + 2.0)
 plot(TUKEY_no_outliers , las=1, col="#00688B")
 
 #Table ANOVA
-#apa.aov.table(ANOVA_BENEFIT, filename = "ANOVA_APA_2.doc")
+apa.aov.table(ANOVA_BENEFIT, filename = "ANOVA_APA_2.doc")
 
-#apa.aov.table(ANOVA_BENEFIT_NO_OUTLIERS, filename = "ANOVA_APA_3.doc")
-
-
-#boxplot(INTENTION_SUM ~ AGE_GROUP, col = c("blue", "green"), data=MA_data)
-
-#ggboxplot(MA_data, x= "INTENTION_SUM", y = "AGE_GROUP", color = "green")
+apa.aov.table(ANOVA_BENEFIT_NO_OUTLIERS, filename = "ANOVA_APA_3.doc")
 
 #correlations
-
 cor.test(MA_data_no_outliers$ALTER,MA_data_no_outliers$INTENTION_SUM)
 cor.test(MA_data_no_outliers$AGE_GROUP_MEDIATION,MA_data_no_outliers$INTENTION_SUM)
 ```
@@ -603,13 +577,13 @@ H1 must be discarded
 H2 can be assumed
 H3 must be discarded
 
-#graphic processing ANOVA
+#Graphic Processing ANOVA
 ```{r}
 Meine_Palette <- c("#00868B", "#00688B")
-#boxplot
+#Boxplot
 ggboxplot(MA_data, x = "Condition", y = "INTENTION_SUM", fill = "AGE_GROUP", palette = Meine_Palette)
 
-#boxblot with no outliers
+#Boxblot with no outliers
 ggboxplot(MA_data_no_outliers, x = "Condition", y = "INTENTION_SUM", fill = "AGE_GROUP", palette = Meine_Palette)
 
 #Interactionplot
@@ -625,7 +599,7 @@ interaction.plot(x.factor = MA_data$Condition, #x-axis variable
                  lwd = 5, #line width
                  trace.label = "Altersgruppe")
 
-#no outliers
+#No outliers
 
 interaction.plot(x.factor = MA_data_no_outliers$Condition, #x-axis variable
                  trace.factor = MA_data_no_outliers$AGE_GROUP, #variable for lines
@@ -639,7 +613,7 @@ interaction.plot(x.factor = MA_data_no_outliers$Condition, #x-axis variable
                  trace.label = "Altersgruppe")
 
 ```
-#Additional t tests for the interaction effect
+##Additional t tests for the interaction effect
 ```{r}
 
 Young$Exp_Group_Young <- ifelse(Young$Condition %in% 
@@ -655,7 +629,7 @@ wilcox_test(INTENTION_SUM ~ Exp_Group_Young, data = Young, alternative = "greate
 
 H4 Amotivation Hypothesis: Amotivation is significantly higher in the younger age category than in the older one 
 
-H5 Extrinsic Hypothesis: the younger the participants, the more extrinsic the motivation factor of the self-determination theory
+H5 Extrinsic Hypothesis: The younger the participants, the more extrinsic the motivation factor of the self-determination theory
 
 ```{r}
 MA_data %>%
@@ -692,41 +666,44 @@ boxplot(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP)
 boxplot(MA_data$INTRINSIC_REGULATION_SUM ~ MA_data$AGE_GROUP)
 
 coin::wilcox_test(MA_data$AMOTIVATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
-#signifikant
+#significant
 
 coin::wilcox_test(MA_data$EXTERNAL_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
-#signifikant
+#significant
 
 coin::wilcox_test(MA_data$INTROJECTED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
-#not signifikant
+#not significant
 
 coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
-#signifikant
+#significant
 
 coin::wilcox_test(MA_data$INTEGRATED_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
-#signifikant
+#significant
 
 coin::wilcox_test(MA_data$INTRINSIC_REGULATION_SUM ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
-#signifikant
+#significant
 
 #Effect Size
 wilcox_effsize(MA_data, AMOTIVATION_SUM ~ AGE_GROUP, alternative = "greater", mu = 0) 
-# 0.28
+#.28
 
 wilcox_effsize(MA_data, EXTERNAL_REGULATION_SUM ~ AGE_GROUP, alternative = "greater", mu = 0) 
-#0.17
+#.17
+
 wilcox_effsize(MA_data, INTROJECTED_REGULATION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
 #not signifikant
+
 wilcox_effsize(MA_data, IDENTIFIED_REGUALTION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
-#0,28
+#.28
 
 wilcox_effsize(MA_data, INTEGRATED_REGULATION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
-#0,35
+#.35
+
 wilcox_effsize(MA_data, INTRINSIC_REGULATION_SUM ~ AGE_GROUP, alternative = "less", mu = 0)
-#0,45
+#.45
 ```
 
-#Correlations for the SDT
+##Correlations for the SDT
 ```{r}
 cor.test(MA_data$ALTER, MA_data$AMOTIVATION_SUM)
 cor.test(MA_data$ALTER, MA_data$EXTERNAL_REGULATION_SUM)
@@ -735,7 +712,7 @@ cor.test(MA_data$ALTER, MA_data$IDENTIFIED_REGUALTION_SUM)
 cor.test(MA_data$ALTER, MA_data$INTEGRATED_REGULATION_SUM)
 cor.test(MA_data$ALTER, MA_data$INTRINSIC_REGULATION_SUM)
 ```
-#Table correlation and SDT
+##Table correlation and SDT
 ```{r}
 subset_cor_SDT <- subset(MA_data, select = c(ALTER,AMOTIVATION_SUM,EXTERNAL_REGULATION_SUM,INTROJECTED_REGULATION_SUM,IDENTIFIED_REGUALTION_SUM,INTEGRATED_REGULATION_SUM,INTRINSIC_REGULATION_SUM))
 
@@ -747,11 +724,9 @@ subset_cor_SDT_INT <- subset(MA_data, select = c(INTENTION_SUM,AMOTIVATION_SUM,E
 
 apa.cor.table(subset_cor_SDT_INT, filename = "Cor_SDT_INT.doc",
               table.number = 85)
-
 ```
 
-#graphic processing T-Tests
-
+##Graphic processing T-Tests
 ```{r}
 MA_data_tabele_SDT <- MA_data
 
@@ -823,14 +798,14 @@ breaks=c(1,2,3,4,5,6,7),
 ```
 #Explorativ
 
-#T tests dependent on blood donation behaviour
+##T-Tests dependent on blood donation behaviour
 
 ```{r}
 Only_BDB_Yes <- subset(MA_data, BDB_GROUP == "Ja")
 
 Only_BDB_No <- subset(MA_data, BDB_GROUP == "Nein")
 ```
-#Probierstation für BDB YES
+##BDB YES
 ```{r}
 coin::wilcox_test(AMOTIVATION_SUM ~ AGE_GROUP, data = Only_BDB_Yes, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE, p.adjust.method = "bonferroni")
 
@@ -865,7 +840,6 @@ labels = c("Amotivation", "Externe Regulation", "Introjizierte Regulation", "Ide
 )
 
 data_determinants_BDB_YES$Determinants <- str_wrap(data_determinants_BDB_YES$Determinants, width = 10)
-#mean(MA_data$AMOTIVATION_SUM[MA_data$AGE_GROUP == "18-29"])
 
 ggbarplot(
 data_determinants_BDB_YES,
@@ -907,7 +881,7 @@ breaks=c(1,2,3,4,5,6,7),
 ) + coord_cartesian(ylim=c(0,7)) + theme (plot.margin = margin(0, 1, 0, 0, "cm"))
 ```
 
-##Crombachs alpha
+##Cronbachs alpha
 ```{r}
 MA_data %>%
    group_by(AGE_GROUP) %>%
@@ -925,11 +899,8 @@ wilcox_effsize(MA_data, AMOTIVATION_SUM_1_2 ~ AGE_GROUP, alternative = "greater"
 
 coin::wilcox_test(MA_data$IDENTIFIED_REGUALTION_SUM_2_3 ~ MA_data$AGE_GROUP, data = MA_data, alternative = "less", distribution = "exact", correct = FALSE, conf.int = TRUE)
 
-#t.test(MA_data$IDENTIFIED_REGUALTION_SUM_2_3 ~ MA_data$AGE_GROUP)
-
 wilcox_effsize(MA_data, IDENTIFIED_REGUALTION_SUM_2_3 ~ AGE_GROUP, alternative = "less", mu = 0)
 ```
-#Grafik
 
 ```{r}
 SDTsubset_exp <- MA_data[,c("AMOTIVATION_SUM", "AMOTIVATION_SUM_1_2", "IDENTIFIED_REGUALTION_SUM", "IDENTIFIED_REGUALTION_SUM_2_3", "AGE_GROUP")]
@@ -981,6 +952,7 @@ expand = c(0, 0),
 breaks=c(1,2,3,4,5,6,7),
 ) + coord_cartesian(ylim=c(0,7)) + theme (plot.margin = margin(0, 1, 0, 0, "cm"))
 ```
+##Prerequisite tests for moderated mediation
 ```{r}
 plot(MA_data$AMOTIVATION_SUM,MA_data$INTENTION_SUM)
 M_Amotivation <- lm(INTENTION_SUM ~ AGE_GROUP_MEDIATION + AMOTIVATION_SUM ,  data = MA_data)
@@ -1024,8 +996,9 @@ plot(M_INTRINSIC_REGULATION_SUM, 4)
 
 ```
 
-#Mediation
-```{r}
+##Moderated mediation
+##The PROCESS from Hayes can be downloaded here: https://www.processmacro.org/download.html The moderated mediations can only be calculated after successful execution.
+
 process(data = MA_data, model=15, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="AMOTIVATION_SUM", w="c_0001",seed = 654321)
 
 process(data = MA_data, model=15, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="EXTERNAL_REGULATION_SUM", w="c_0001",seed = 654321)
@@ -1036,10 +1009,9 @@ process(data = MA_data, model=15, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m
 
 process(data = MA_data, model=15, x= "AGE_GROUP_MEDIATION", y="INTENTION_SUM", m="INTRINSIC_REGULATION_SUM", w="c_0001",seed = 654321)
 
-```
 
-#Correlations
 
+##Correlations
 ```{r}
 cor.test(MA_data$INTENTION_SUM, MA_data$AMOTIVATION_SUM)
 cor.test(MA_data$INTENTION_SUM, MA_data$EXTERNAL_REGULATION_SUM)
@@ -1047,52 +1019,6 @@ cor.test(MA_data$INTENTION_SUM, MA_data$INTROJECTED_REGULATION_SUM)
 cor.test(MA_data$INTENTION_SUM, MA_data$IDENTIFIED_REGUALTION_SUM)
 cor.test(MA_data$INTENTION_SUM, MA_data$INTEGRATED_REGULATION_SUM)
 cor.test(MA_data$INTENTION_SUM, MA_data$INTRINSIC_REGULATION_SUM)
-```
-
-
-
-
-
-#Probierstation
-```{r}
-#boxplot(data$INTENTION_1 ~ data$AGE_GROUP)
-table(MA_data$INTEGRATED_REGULATION_1[MA_data$ALTER<=29])
-
-mean(MA_data$INTENTION_SUM[MA_data$AGE_GROUP == "18-29"])
-
-median(MA_data$INTENTION_SUM[MA_data$AGE_GROUP == "30-75"])
-
-t.test(MA_data$INTENTION_SUM, MA_data$CONDITION[MA_data$CONDITION == 1 | MA_data$CONDITION == 3])
-
-boxplot(data$INTENTION_1 ~ MA_data$c_0001)
-
-table(MA_data$c_0001)
-
-mean(MA_data$INTENTION_1[MA_data$Condition==3])
-
-describe(MA_data$AMOTIVATION_SUM)
-summary(MA_data$AMOTIVATION_SUM)
-
-hist(MA_data$AMOTIVATION_SUM)
-
-boxplot(INTENTION_SUM ~ Condition + AGE_GROUP, data=MA_data)
-
-#mal schauen, ob das Blutspendeverhalten einen Einfluss hat
-
-boxplot(MA_data$INTENTION_SUM ~ MA_data$BDB_GROUP)
-
-boxplot(Only_BDB_Yes$INTENTION_SUM ~ Only_BDB_Yes$AGE_GROUP)
-
-mean(Only_BDB_Yes$INTENTION_SUM[Only_BDB_Yes$AGE_GROUP == "30-75"],na.rm = T)
-
-coin::wilcox_test(Only_BDB_Yes$AMOTIVATION_SUM ~ Only_BDB_Yes$AGE_GROUP, data = Only_BDB_Yes, alternative = "greater", distribution = "exact", correct = FALSE, conf.int = TRUE)
-
-wilcox_effsize(Only_BDB_Yes, AMOTIVATION_SUM ~ AGE_GROUP, alternative = "greater", mu = 0)
-
-#Für Alt
-boxplot(Only_BDB_No$INTENTION_SUM ~ Only_BDB_No$AGE_GROUP)
-
-describe(Only_BDB_No)
 ```
 
 
